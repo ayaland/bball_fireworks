@@ -1,0 +1,25 @@
+<head>
+    <link rel="stylesheet" type="text/css" href="/frontend/src/stylesheets/style.css">
+</head>
+<body>
+    <canvas id="canvas">Your browser does not support canvas</canvas>
+    <script type="text/javascript" src="./bundle.js"></script>
+    <!-- <script type="text/javascript" src="./js/utils.js"></script> -->
+
+    <button id="addFirework">add firework</button>
+
+    <form id="form" onsubmit="return false;">
+        <label for="pName">Player name: </label>
+        <input type="text" id="pName" />
+        <input type="submit" value="Submit" onClick="utils.saveName" />
+    </form>
+    <!-- <script type="text/javascript">
+        const show = new BballFireworks();
+        const doAddFirework = function() {
+            show.addFirework();
+            return;
+        }
+    </script> -->
+</body>
+
+
