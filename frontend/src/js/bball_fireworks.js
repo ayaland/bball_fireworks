@@ -11,7 +11,7 @@ class BballFireworks {
         this.ctx = ctx;
         this.fireworks = [];
         this.stars = []
-        this.ticksSinceFirework = 30;
+        this.ticksSinceFirework = 20;
         this.removeFirework = this.removeFirework.bind(this);
         this.removeStar = this.removeStar.bind(this);
 
@@ -23,6 +23,8 @@ class BballFireworks {
 
     getName() {
         const playerName = document.getElementById("pname");
+        console.log('in bball_fireworks');
+        console.log(playerName);
         alert(playerName);
     }
 
@@ -32,12 +34,8 @@ class BballFireworks {
     }
 
     launchFirework() {
-        // console.log('Bballfireworks launchFirework')
         if (this.ticksSinceFirework >= utils.randomIntFromRange(TICKS_MIN, TICKS_MAX)) {
-            // console.log('if statement')
             this.fireworks.push(new Firework(this.canvas, this.ctx, this));
-            // console.log('firework created')
-            // console.log(this.fireworks)
             this.ticksSinceFirework = 0;
         
         } else {

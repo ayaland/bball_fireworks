@@ -32,7 +32,6 @@ class Star {
         this.trailLength = STAR_TRAIL_LENGTH;
         while(this.trailLength--) {
             this.trail.push([this.x, this.y])
-            // console.log(this.trail)
         }
         this.hue = this.firework.hue;
         this.transparency = TRANSPARENCY;
@@ -40,12 +39,6 @@ class Star {
 
         this.speed = utils.randomIntFromRange(SPEED_MIN, SPEED_MAX);
         this.decay = utils.random(STAR_DECAY_MIN, STAR_DECAY_MAX);
-        // console.log(STAR_DECAY_MIN)
-        // console.log(STAR_DECAY_MAX)
-        // console.log(this.decay)
-
-        // console.log('decay')
-        // console.log(this.decay)
     }
 
     update() {
@@ -66,14 +59,7 @@ class Star {
         } else {
             this.y += (this.lengthY / this.r) * this.speed + STAR_ACCELERATION;
         }
-        // console.log([this.x, this.y)
-        // console.log('this.transparency')
-        // console.log(this.transparency)
         this.transparency -= this.decay;
-        // console.log('this.transparency')
-        // console.log(this.transparency)
-        // console.log('this.decay')
-        // console.log(this.decay)
         if (this.transparency <= this.decay) {
             // console.log('inside transparency decay')
             this.show.removeStar(this.x, this.y);
@@ -81,7 +67,6 @@ class Star {
     }
 
     draw() {
-        // console.log('Star draw')
         this.ctx.beginPath();
         let trailEndX = this.trail[this.trail.length - 1][0];
         let trailEndY = this.trail[this.trail.length - 1][1];

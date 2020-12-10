@@ -23,7 +23,6 @@ let COLORS = [];
 class Firework {
     constructor(canvas, ctx, show) {
         this.canvas = canvas;
-        // console.log('firework constructor')
         this.ctx = ctx;
         this.show = show;
         this.stageWidth = this.canvas.width - PADDING_X;
@@ -36,13 +35,15 @@ class Firework {
         this.y = this.canvas.height;
         this.distanceToGo = this.canvas.height - this.destinationY;
         this.distanceTraveled = 0;
-        
+
+        // this.v1 = createVector(this.destinationX, this.destinationY);
+
         this.trail = [];
         this.trailLength = FIREWORK_TRAIL_LENGTH;
         while (this.trailLength--) {
             this.trail.push([this.x, this.y]);
         }
-        // console.log(this.trail)
+
         this.numStars = NUM_STARS;
         this.stars = [];
         

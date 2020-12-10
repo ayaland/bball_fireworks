@@ -1,11 +1,8 @@
-// import BballFireworks from './js/bball_fireworks';
-const BballFireworks = require('./js/bball_fireworks');
-// import utils from './js/utils';
-// import saveName from './js/utils';
-const saveName = require('./js/utils')
+import BballFireworks from './js/bball_fireworks';
+const axios = require('axios')
+const utils = require('./js/utils')
 
 export const getCanvas = () => {
-    console.log('start.js')
     const canvas = document.querySelector('canvas');
     const ctx = canvas.getContext('2d');
     canvas.width = window.innerWidth;
@@ -18,20 +15,23 @@ export const getCanvas = () => {
 }
 
 window.addEventListener('DOMContentLoaded', () => {
-    console.log('test')
     const show = new BballFireworks(getCanvas());
-    const addFireworkButton = document.querySelector('#addFirework');
-    // const addNameField = document.queryCommandValue('#saveName');
-    const addNameField = saveName();
-    console.log(addNameField);
-    debugger;
-    // console.log(show);
-    // console.log(addFireworkButton);
+    const addFireworkButton = document.getElementById('addFirework');
+    let addNameField = document.getElementById('submitButton');
 
     addNameField.addEventListener('click', (e) => {
-        utils.saveName();
-        console.log('inside start saveName')
-    })
+        let pName = utils.saveName();
+        // console.log(pName)
+        // console.log('inside start.js > saveName');
+        axios.get('/career', {
+             params: { 
+                 name: pName 
+            } 
+        })
+        .then((data) => {
+            console.log(data)
+        });
+    });
 
     addFireworkButton.addEventListener('click', (e) => {
         show.clearCanvas();
@@ -40,6 +40,8 @@ window.addEventListener('DOMContentLoaded', () => {
         show.launchFirework();
     });
 })
+
+// will need .then or async syntax to wait for data to return
 
 window.requestAnimFrame = (() => {
     return window.requestAnimationFrame ||

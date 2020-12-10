@@ -4,31 +4,35 @@ const mongoose = require(`mongoose`);
 const bodyParser = require('body-parser');
 const db = require(`./config/keys`).mongoURI;
 const path = require(`path`);
-const mime = require(`mime`);
+const port = process.env.PORT || 5000;
+const scrapeData = require('./routes/api/scrapeData')
+
+const pageURL = 'http://www.basketball-reference.com';
 
 // mongoose.connect returns a promise
 mongoose
-    .connect(db, { useNewUrlParser: true })
-    .then(() => console.log("connected to mongo"))
+    .connect(db, 
+        { useNewUrlParser: true, useUnifiedTopology: true })
+    // .then(() => console.log("connected to mongo"))
     .catch((err) => console.log(err));
 
-app.use(express.static('/frontend/src'));
-// app.engine('html', require('ejs').renderFile);
-// app.set(`views`, __dirname+`/frontend/src`)
+app.use(bodyParser.json());
 
-app.get(`/`, (req, res) => {
-    let type = mime.getType(path);
-    if (!res.getHeader('content-type')) {
-        // let charset = mime.charsets.lookup(type);
-        res.setHeader('Content-Type', type);
-    };
+app.use(express.static(path.join(__dirname, "frontend", "src")));
 
-    res.sendfile(path.resolve(__dirname, `frontend/src/index.html`))
-    // res.send(`Hello!`);
-    // res.render(`index.html`);
+app.get('/career', async (req, res) => {
+    // console.log("inside app.js app.get")
+    // console.log(req.query.name)
+    let data = await scrapeData(pageURL, req.query.name);
+    res.json(data)
+    // format data and send JSON to frontend, res.json
+
+    // Career.find()
+    //     .then(careerStats => res.json(careerStats))
+    //     .catch(err => res.status(404).json({ nocareerfound: "No stats found" }))
 });
 
-const port = process.env.PORT || 5000;
+// app.use('/career', stats);
 
 app.listen(port, () => {
     console.log(`Listening is working on ${port}`)

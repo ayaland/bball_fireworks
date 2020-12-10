@@ -28,25 +28,16 @@ function cleanCanvas() {
 }
 
 const saveName = function saveName() {
-    console.log('inside utils saveName')
-    let savedName = document.getElementById("pName").value;
-    // return savedName;
-    // puppeteer.launch()
-    // console.log(savedName)
+    // console.log('inside utils > saveName')
+    let savedName = document.getElementById('pName').value;
     return savedName;
 }
 
-// module.exports = randomIntFromRange;
-module.exports = saveName;
-// exports.random = random;
-// exports.plusOrMinus = plusOrMinus;
-// exports.saveName = saveName;
-// exports.calculateDistance = calculateDistance;
-// exports.cleanCanvas = cleanCanvas;
-// module.exports = { 
-//     randomIntFromRange, 
-//     random, 
-//     calculateDistance,
-//     cleanCanvas,
-//     saveName,
-// }
+module.exports = { 
+    calculateDistance,
+    cleanCanvas,
+    plusOrMinus,
+    random, 
+    randomIntFromRange, 
+    saveName,
+}

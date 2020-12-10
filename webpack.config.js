@@ -6,14 +6,11 @@ module.exports = {
         extensions: [".js", ".json", ".css"]
     },
   
-    entry: { 
-        index: path.resolve(__dirname, "/frontend/src"),
-        filename: 'start.js' 
-    },
+    entry: "./src/start.js",
     
     output: {
-        path: path.resolve(__dirname, "/frontend/src"),
-        filename: 'bundle[contenthash].js'
+        path: path.resolve(__dirname, "frontend", "src"),
+        filename: 'bundle.js'
     },
     
     devtool: "source-map",
