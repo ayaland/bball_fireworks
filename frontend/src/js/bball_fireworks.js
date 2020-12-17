@@ -11,7 +11,9 @@ class BballFireworks {
         this.ctx = ctx;
         this.fireworks = [];
         this.stars = []
+        // controls how many on screen at once
         this.ticksSinceFirework = 20;
+        // this.ticksSinceFirework = 50;
         this.removeFirework = this.removeFirework.bind(this);
         this.removeStar = this.removeStar.bind(this);
 
@@ -23,9 +25,7 @@ class BballFireworks {
 
     getName() {
         const playerName = document.getElementById("pname");
-        console.log('in bball_fireworks');
-        console.log(playerName);
-        alert(playerName);
+        // alert(playerName);
     }
 
     removeFirework() {

@@ -1,7 +1,7 @@
 const utils = require('./utils');
 
-const SPEED_MIN = 1;
-const SPEED_MAX = 10;
+const SPEED_MIN = 2;
+const SPEED_MAX = 8;
 const STAR_ACCELERATION = 0.7;
 const FRICTION = 0.95;
 
@@ -13,16 +13,18 @@ const TRANSPARENCY = 1;
 const STAR_DECAY_MIN = 0.02;
 const STAR_DECAY_MAX = 0.04;
 const STAR_TRAIL_LENGTH = 5;
-// const STAR_COUNT = 80;
 
+// this should have been called Spark but it's too late now I don't want to break everything
 class Star {
     constructor(x, y, ctx, r, firework, show) {
         this.x = x;
         this.y = y;
-        this.ctx = ctx;
         this.r = r;
-        this.show = show;
+
+        this.ctx = ctx;
         this.firework = firework;
+        this.show = show;
+
         this.destinationX = utils.randomIntFromRange((this.x - this.r), (this.x + this.r));
         this.lengthX = Math.abs(this.x - this.destinationX);
         this.lengthY = (Math.sqrt((this.r**2) - (this.lengthX**2)));
@@ -42,23 +44,38 @@ class Star {
     }
 
     update() {
-        // console.log('Star update')
-        this.trail.pop();
+        // console.log(this.trail)
+        this.trail.pop(); // remove last element, like the spark fades out
         this.trail.unshift([this.x, this.y]);
         // console.log(this.trail)
         this.speed *= FRICTION;
-        if (this.destinationX < this.x) {
+        if (this.destinationX <= this.x) {
             this.x -= (this.lengthX / this.r) * this.speed;
+            // this if loop checks if we overshot the destinationX
+            if (this.destinationX > this.x) {
+                while (this.transparency >= this.decay) {
+                    this.x -= (this.lengthX / this.r) * this.speed;
+                    this.transparency -= this.decay;
+                }
+            }
 
         } else {
             this.x += (this.lengthX / this.r) * this.speed;
+            if (this.destinationX < this.x) {
+                while (this.transparency >= this.decay) {
+                    this.x += (this.lengthX / this.r) * this.speed;
+                    this.transparency -= this.decay
+                }
+            }            
         }
-
+        // stars going down
         if (this.destinationY < this.y) {
-            this.y -= (this.lengthY / this.r) * this.speed + STAR_ACCELERATION;
+            this.y += (this.lengthY / this.r) * this.speed;
+        // stars going up
         } else {
-            this.y += (this.lengthY / this.r) * this.speed + STAR_ACCELERATION;
+            this.y -= (this.lengthY / this.r) * this.speed;
         }
+        // this.destinationY -= STAR_ACCELERATION;
         this.transparency -= this.decay;
         if (this.transparency <= this.decay) {
             // console.log('inside transparency decay')

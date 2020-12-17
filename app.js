@@ -5,9 +5,11 @@ const bodyParser = require('body-parser');
 const db = require(`./config/keys`).mongoURI;
 const path = require(`path`);
 const port = process.env.PORT || 5000;
-const scrapeData = require('./routes/api/scrapeData')
+const scrapeData = require('./routes/api/scrapeData');
+const scrapeColors = require('./routes/api/scrapeColors');
 
 const pageURL = 'http://www.basketball-reference.com';
+const colorsURL = 'https://teamcolorcodes.com/';
 
 // mongoose.connect returns a promise
 mongoose
@@ -23,7 +25,7 @@ app.use(express.static(path.join(__dirname, "frontend", "src")));
 app.get('/career', async (req, res) => {
     // console.log("inside app.js app.get")
     // console.log(req.query.name)
-    let data = await scrapeData(pageURL, req.query.name);
+    let data = await scrapeData(pageURL, colorsURL, req.query.name);
     res.json(data)
     // format data and send JSON to frontend, res.json
 

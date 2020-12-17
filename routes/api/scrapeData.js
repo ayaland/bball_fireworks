@@ -1,13 +1,14 @@
 const puppeteer = require('puppeteer');
 
-const scrape = async (pageURL, pName) => {
+const scrape = async (pageURL, colorsURL, pName) => {
 
     const browser = await puppeteer.launch({
         headless: false,
-        slowMo: 500
+        slowMo: 100
     });
 
     const page = await browser.newPage();
+    // const page = await browser.goto(pageURL);
 
     try {
         await page.goto(pageURL);
@@ -27,19 +28,32 @@ const scrape = async (pageURL, pName) => {
         await page.click('#players > div.search-item > div.search-item-name > a')
         
         // scrapes per season data in main table
-        await page.waitForSelector('#per_game > tbody');
+        await page.waitForSelector('#per_game > tbody > tr')
+        // .then (() => {
+            // console.log("selector found");
+            // let rows = await page.$$eval('#per_game > tbody > tr', rows => {
+            //     return Array.from(rows, row => {
+            //         const columns = row.querySelectorAll('td');
+            //         return Array.from(columns, column => column.innerText);
+            //     })
+            // })
+        // });
         let rows = await page.$$eval('#per_game > tbody > tr', rows => {
             return Array.from(rows, row => {
                 const columns = row.querySelectorAll('td');
                 return Array.from(columns, column => column.innerText);
             })
-        });
+        })
+        // await page.goto(colorsURL);
+
+    
         // console.log(rows);
-        await browser.close();
-        
+        // await browser.close();
+        const teams = new Set();
         for (let season of rows) {
-            console.log(season[1]);
+            teams.add(season[1]);
         }
+        console.log(teams);
         return rows;
     }
     

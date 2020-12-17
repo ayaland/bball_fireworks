@@ -34,10 +34,17 @@ window.addEventListener('DOMContentLoaded', () => {
     });
 
     addFireworkButton.addEventListener('click', (e) => {
-        show.clearCanvas();
-        show.draw();
-        show.updateObjects();
-        show.launchFirework();
+        // click by click test
+            // show.clearCanvas();
+            // show.draw();
+            // show.updateObjects();
+            // show.launchFirework();
+        setInterval(() => {
+            show.clearCanvas();
+            show.draw();
+            show.updateObjects();
+            show.launchFirework();
+        }, 20);
     });
 })
 

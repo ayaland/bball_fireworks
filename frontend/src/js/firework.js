@@ -5,14 +5,14 @@ import Star from './star';
 const FIREWORK_ACCELERATION = 0.97;
 const FIREWORK_BRIGHTNESS_MIN = 50;
 const FIREWORK_BRIGHTNESS_MAX = 70;
-const FIREWORK_SPEED = 20;
-const FIREWORK_TRAIL_LENGTH = 2;
+const FIREWORK_SPEED = 10;
+const FIREWORK_TRAIL_LENGTH = 1;
 // const FIREWORK_TARGET = true;
 
 const FIREWORK_DECAY_MIN = 0.015;
 const FIREWORK_DECAY_MAX = 0.03;
 const FIREWORK_CLEANUP = 0.3;
-const NUM_STARS = 10;
+const NUM_STARS = 20;
 
 const PADDING_X = 80;
 const PADDING_Y = 80;
@@ -25,12 +25,13 @@ class Firework {
         this.canvas = canvas;
         this.ctx = ctx;
         this.show = show;
+
         this.stageWidth = this.canvas.width - PADDING_X;
         this.stageHeight = this.canvas.height - PADDING_Y;
         
         this.destinationX = utils.randomIntFromRange(PADDING_X, this.stageWidth - PADDING_X);
         this.destinationY = utils.randomIntFromRange(PADDING_Y, this.stageHeight - PADDING_Y);
-        this.blastRadius = utils.randomIntFromRange(20, 2 * PADDING_Y);
+        this.blastRadius = utils.randomIntFromRange(40, 3 * PADDING_Y);
         this.x = this.destinationX;
         this.y = this.canvas.height;
         this.distanceToGo = this.canvas.height - this.destinationY;
