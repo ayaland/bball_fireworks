@@ -5,8 +5,9 @@ const bodyParser = require('body-parser');
 const db = require(`./config/keys`).mongoURI;
 const path = require(`path`);
 const port = process.env.PORT || 5000;
-const scrapeData = require('./routes/api/scrapeData');
+const scrapeStats = require('./routes/api/scrapeStats');
 const scrapeColors = require('./routes/api/scrapeColors');
+const scrapeEverything = require('./routes/api/scrapeEverything');
 
 const pageURL = 'http://www.basketball-reference.com';
 const colorsURL = 'https://teamcolorcodes.com/';
@@ -23,10 +24,13 @@ app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, "frontend", "src")));
 
 app.get('/career', async (req, res) => {
-    // console.log("inside app.js app.get")
-    // console.log(req.query.name)
-    let data = await scrapeData(pageURL, colorsURL, req.query.name);
-    res.json(data)
+    // let data = await scrapeStats(pageURL, req.query.name);
+    let data = await scrapeEverything(pageURL, colorsURL, req.query.name);
+
+    // stats is an array of [[career stats], {teams played for}];
+    // let stats = data[0];
+    // let teams = data[1];
+    // res.json(data)
     // format data and send JSON to frontend, res.json
 
     // Career.find()

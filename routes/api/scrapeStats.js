@@ -1,16 +1,16 @@
-const puppeteer = require('puppeteer');
+// const puppeteer = require('puppeteer');
 
-const scrape = async (pageURL, colorsURL, pName) => {
+// const scrapeStats = async (pageURL, pName) => {
 
-    const browser = await puppeteer.launch({
-        headless: false,
-        slowMo: 100
-    });
+//     const browser = await puppeteer.launch({
+//         headless: false,
+//         slowMo: 100
+//     });
 
-    const page = await browser.newPage();
-    // const page = await browser.goto(pageURL);
+//     const page = await browser.newPage();
 
-    try {
+const scrapeStats = async (pageURL, page, pName) => {
+
         await page.goto(pageURL);
 
         // types player name in input field and submits
@@ -46,22 +46,21 @@ const scrape = async (pageURL, colorsURL, pName) => {
         })
         // await page.goto(colorsURL);
 
-    
-        // console.log(rows);
         // await browser.close();
         const teams = new Set();
         for (let season of rows) {
             teams.add(season[1]);
         }
-        console.log(teams);
-        return rows;
-    }
-    
-    catch (e) {
-        console.log(e);
-    }
+        // console.log(teams);
+        return [
+            rows,
+            teams
+        ];
+
+
+}
 
 // scrape(pageURL).catch(console.error);
-};
+// };
 
-module.exports = scrape;
+module.exports = scrapeStats;

@@ -21,8 +21,6 @@ window.addEventListener('DOMContentLoaded', () => {
 
     addNameField.addEventListener('click', (e) => {
         let pName = utils.saveName();
-        // console.log(pName)
-        // console.log('inside start.js > saveName');
         axios.get('/career', {
              params: { 
                  name: pName 

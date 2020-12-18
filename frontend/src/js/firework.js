@@ -18,7 +18,6 @@ const PADDING_X = 80;
 const PADDING_Y = 80;
 
 const HUE_STEP_INCREASE = 1.5;
-let COLORS = [];
 
 class Firework {
     constructor(canvas, ctx, show) {
@@ -60,26 +59,22 @@ class Firework {
     }
     
     update() {
-        // console.log('Firework update')
         this.trail.pop();
         this.trail.unshift([this.x, this.y]);
         this.speed *= this.acceleration;
         this.hue += HUE_STEP_INCREASE;
         
         if (this.y <= this.destinationY) {
-            // console.log('Firework reached destination');
             this.createStars();
             if (this.stars.length <= 0) {
                 this.show.removeFirework();
             }
-            // show.removeFirework();
         } else {
             this.y -= this.speed;
         }
     }
     
     draw() {
-        // console.log('Firework draw')
         this.ctx.beginPath();
         let trailEndX = this.trail[this.trail.length - 1][0];
         let trailEndY = this.trail[this.trail.length - 1][1];
