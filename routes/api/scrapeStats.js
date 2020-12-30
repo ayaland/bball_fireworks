@@ -29,22 +29,13 @@ const scrapeStats = async (pageURL, page, pName) => {
         
         // scrapes per season data in main table
         await page.waitForSelector('#per_game > tbody > tr')
-        // .then (() => {
-            // console.log("selector found");
-            // let rows = await page.$$eval('#per_game > tbody > tr', rows => {
-            //     return Array.from(rows, row => {
-            //         const columns = row.querySelectorAll('td');
-            //         return Array.from(columns, column => column.innerText);
-            //     })
-            // })
-        // });
-        let rows = await page.$$eval('#per_game > tbody > tr', rows => {
+
+        const rows = await page.$$eval('#per_game > tbody > tr.full_table', rows => {
             return Array.from(rows, row => {
                 const columns = row.querySelectorAll('td');
                 return Array.from(columns, column => column.innerText);
             })
         })
-        // await page.goto(colorsURL);
 
         // await browser.close();
         const teams = new Set();

@@ -11,10 +11,12 @@ const scrapeEverything = async (pageURL, colorsURL, pName) => {
 
     const page = await browser.newPage();
     // const page = await browser.goto(pageURL);
-
-    const rowsandTeams = scrapeStats(pageURL, page, pName);
-    
-    rowsandTeams.then(console.log(rowsandTeams))
+    // any promise that needs to be resolved uses 'await'
+    const rowsandTeams = await scrapeStats(pageURL, page, pName);
+    const teams = rowsandTeams[1];
+    const seasons = rowsandTeams[0];
+    // console.log(rowsandTeams);
+    // return rowsandTeams;
 };
 
 module.exports = scrapeEverything;
