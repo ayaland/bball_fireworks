@@ -21,7 +21,7 @@ const scrapeStats = async (pageURL, page, pName) => {
             },
             pName
         );
-        await page.$eval('input[name = search', (search) => (search.value = window.pName));
+        await page.$eval('input[name = "search"]', (search) => (search.value = window.pName));
         await page.click('input[type="submit"]');
 
         // clicks first link in results
@@ -39,8 +39,9 @@ const scrapeStats = async (pageURL, page, pName) => {
 
         // await browser.close();
         const teams = new Set();
-        for (let season of rows) {
-            teams.add(season[1]);
+        for (let row of rows) {
+            // here we take the 2nd entry of each array
+            teams.add(row[1]);
         }
         // console.log(teams);
         return [
