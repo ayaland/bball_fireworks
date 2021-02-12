@@ -1,5 +1,3 @@
-// const puppeteer = require('puppeteer');
-
 const NBA = {
     'ATL': 'Atlanta Hawks',
     'BOS': 'Boston Celtics',
@@ -32,7 +30,7 @@ const NBA = {
     'TOT': 'Toronto Raptors',
     'UTA': 'Utah Jazz',
     'WAS': 'Washington Wizards',
-    'defunct teams': 'charlotte bobcats, N.O. Jazz, SD clippers'
+    'defunct teams': 'Charlotte Bobcats, New Orleans Jazz, San Diego Clippers'
 }
 
 const WNBA = {
@@ -51,64 +49,81 @@ const WNBA = {
     'defunct teams': 'Tulsa Shock, Sacramento Monarchs, San Antonio Stars'
 }
 
-const scrapeColors = async (pageURL, page, league, teams) => {
+const scrapeColors = async (colorsURL, page, league, teams) => {
 
     // const page = await browser.newPage();
+    await page.goto(colorsURL);
 
     // try {
-        await page.goto(pageURL);
-        // await page.waitForSelector('input[id ="searchform-2"]');
-        // await page.waitForSelector('form');
-        // await page.waitForSelector('div.site-inner');
-
-        let teamColors = {}
+        // create Object of full team names as key and values to be colors scraped
+        let teamColors = new Object();
         for (let team of teams) {
-            // console.log(league)
             if (league == 'NBA') {
-                // console.log(NBA[team]);
                 let teamName = NBA[team];
-                // console.log(teamName)
-                // await page.waitForSelector('input');
-                await page.evaluate(
-                    (teamName) => {
-                        window.teamName = teamName
-                    },
-                    teamName
-                );
-
-                // await page.$eval('input[name = "s"]', (s) => (s.value = window.teamName));
-                // console.log(window.teamName);
-                // await page.waitForSelector('input[type="submit"]', { visible: true })
-                // await page.click('input[id ="searchform-2"]')
-                // await page.evaluate(() => document.querySelector('input.search-form-2').click())
-                await page.$eval('input[id ="searchform-2"]', (search) => (search.value = window.teamName));
-                // console.log('after first input')
-                await page.evaluate(() => document.querySelector('input.search-form-input').click())
-                // await page.click('input[class ="search-form-input"]')
-                await page.$eval('input[class ="search-form-input"]', (search) => (search.value = window.teamName));
-                // teamColors.add()
-                // console.log('after $eval')
-                // console.log('after second input')
-
-                // await page.click('input[type="submit"]');
-                //  page.click does not work after Puppeteer 1.6
-                await page.evaluate(() => document.querySelector('input.search-form-submit').click())
-                // await page.click('[class="search-form-submit"]');
-                // await page.click('input[class="search-form-submit"]');
-                // await page.press('Enter')
-                // await page.click('submit')
-
-                // console.log('after page click')
-
+                teamColors[teamName] = '';
             } else if (league == 'WNBA') {
-                console.log('in WNBA')
-                console.log(team)
-            }
+                let teamName = WNBA[team];
+                teamColors[teamName] = '';
+            };
+        // console.log(teamColors)
+
+        for (let [teamName, hexCodes] of Object.entries(teamColors)) {
+            console.log(`${teamName}: ${hexCodes}`);
+            await page.evaluate(
+                (teamName) => {
+                    window.teamName = teamName
+                },
+                teamName
+            );
+            // the HEX colors webpage has two search forms, this one seems unnecessary
+            // await page.waitForSelector('#searchform-2');
+            // await page.$eval('input[id ="searchform-2"]', 
+            //     (search) => (search.value = window.teamName));
+
+            await page.waitForSelector('.search-form-input');
+            await page.$eval('input[class ="search-form-input"]', 
+                (search) => (search.value = window.teamName));
+            // await page.click('input[type="submit"]');
+            //  page.click does not work after Puppeteer 1.6
+            await page.evaluate(() => document.querySelector('input.search-form-submit').click())
+            
+            await page.waitForSelector('div.colorblock');
+            
+            // teamColors.add()
+            const hexColors = await page.$$eval('.colorblock', texts => {
+                return Array.from(texts, text => {
+                   const colorData = text.innerText.split('\n');
+                   return colorData;
+                })
+            });
+            console.log(hexColors)
+            return(hexColors)
+                    
+                }
         }
+
+                
+
+
+                // const colorsC = new Array();
+                // for (let color of colors) {
+                //     colorsC.add(color.style)
+                // }
+
+                // await page.evaluate(() => {
+                //     console.log('inside data page evaluate')
+                //     const els = document.querySelectorAll('.colorblock');
+                //     console.log(els)
+                    // return getComputedStyle(colors);
+                    // console.log(getComputedStyle(els))
+                // });
+                // console.log(data)
+
+        // }
     // }
 
     // catch {
-    //     console.log('Houston Rockets, we have a problem')
+    //     console.log("Houston Rockets, we've had a problem")
     // }
 };
 

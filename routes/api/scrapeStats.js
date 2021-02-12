@@ -31,11 +31,12 @@ const scrapeStats = async (pageURL, page, pName) => {
         await page.waitForSelector('#per_game > tbody > tr')
 
         const rows = await page.$$eval('#per_game > tbody > tr.full_table', rows => {
+            console.log('inside rows $$eval')
             return Array.from(rows, row => {
                 const columns = row.querySelectorAll('td');
                 return Array.from(columns, column => column.innerText);
             })
-        })
+        });
 
         // await browser.close();
         const teams = new Set();
