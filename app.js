@@ -40,9 +40,6 @@ app.get('/career', async (req, res) => {
     // res.json(data)
     // format data and send JSON to frontend, res.json
 
-    // Career.find()
-    //     .then(careerStats => res.json(careerStats))
-    //     .catch(err => res.status(404).json({ nocareerfound: "No stats found" }))
 });
 
 // app.use('/career', stats);

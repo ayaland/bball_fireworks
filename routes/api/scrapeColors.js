@@ -68,11 +68,12 @@ const scrapeColors = async (colorsURL, page, league, teams) => {
             // console.log(teamColors)
         };
         
+        // loop over team names (keys) in the Object
+        // put them in input field
+        // scrape hex codes for colors
         for (let [teamName, hexCodes] of Object.entries(teamColors)) {
             // console.log(`${teamName}: ${hexCodes}`);
             await page.goto(colorsURL);
-            // console.log('went to colors page')
-            // console.log(teamName)
             await page.evaluate(
                 (teamName) => {
                     window.teamName = teamName
@@ -81,11 +82,9 @@ const scrapeColors = async (colorsURL, page, league, teams) => {
             );
 
             await page.waitForSelector('.search-form-input');
-            console.log('after selector')
             await page.$eval('input[class ="search-form-input"]',
                 (search) => (search.value = window.teamName));
-            console.log('after eval team name')
-            //  page.click does not work after Puppeteer 1.6
+            // page.click does not work after Puppeteer 1.6
             // await page.click('input[type="submit"]');
             await page.evaluate(() => document.querySelector('input.search-form-submit').click())
 
@@ -94,7 +93,6 @@ const scrapeColors = async (colorsURL, page, league, teams) => {
             const pageData = await page.$$eval('div.colorblock', texts => {
                 return Array.from(texts, text => {
                     const colorData = text.innerText;
-                    // const colorData = text.innerText.split('\n');
                     return colorData;
                 })
             });
@@ -109,37 +107,13 @@ const scrapeColors = async (colorsURL, page, league, teams) => {
 
         return(teamColors)
         
-        // return (pageData)
-        
-        //     const pageData = await page.$$eval('.colorblock', texts => {
-            //         return Array.from(texts, text => {
-        //            const colorData = text.innerText.split('\n');
-        //         //    const colorData = text.innerText;
-        //            console.log(colorData)
-        //            return colorData;
-        //         })
-        //     });
-        // for (let arr of pageData) {
-            //     // console.log(arr);
-            //     let hex = reghex.exec(arr)[0];
-            //     // console.log(hex);
-            //     teamColors[teamName].push(hex);
         }
-            // console.log(teamColors)
     }
     
     catch {
         console.log("Houston Rockets, we've had a problem")
     }
 };
-
-// // console.log(rows);
-// // await browser.close();
-// const colors = []
-// for (let season of rows) {
-//     console.log(season[1]);
-// }
-// return rows;
 
 module.exports = scrapeColors;
 
