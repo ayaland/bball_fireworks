@@ -49,82 +49,73 @@ const WNBA = {
     'defunct teams': 'Tulsa Shock, Sacramento Monarchs, San Antonio Stars'
 }
 
+const reghex = new RegExp(/#[0-9A-F]{6}/i)
+
 const scrapeColors = async (colorsURL, page, league, teams) => {
 
-    // const page = await browser.newPage();
-    await page.goto(colorsURL);
-
-    // try {
-        // create Object of full team names as key and values to be colors scraped
+    
+    try {
+    // create Object of full team names as key and values to be colors scraped
         let teamColors = new Object();
         for (let team of teams) {
             if (league == 'NBA') {
                 let teamName = NBA[team];
-                teamColors[teamName] = '';
+                teamColors[teamName] = [];
             } else if (league == 'WNBA') {
                 let teamName = WNBA[team];
-                teamColors[teamName] = '';
-            };
-        // console.log(teamColors)
-
+                teamColors[teamName] = [];
+            }
+            // console.log(teamColors)
+        };
+        
         for (let [teamName, hexCodes] of Object.entries(teamColors)) {
-            console.log(`${teamName}: ${hexCodes}`);
+            // console.log(`${teamName}: ${hexCodes}`);
+            await page.goto(colorsURL);
+            // console.log('went to colors page')
+            // console.log(teamName)
             await page.evaluate(
                 (teamName) => {
                     window.teamName = teamName
                 },
                 teamName
-            );
+                );
+        }
             // the HEX colors webpage has two search forms, this one seems unnecessary
             // await page.waitForSelector('#searchform-2');
             // await page.$eval('input[id ="searchform-2"]', 
             //     (search) => (search.value = window.teamName));
 
             await page.waitForSelector('.search-form-input');
+            console.log('after selector')
             await page.$eval('input[class ="search-form-input"]', 
                 (search) => (search.value = window.teamName));
-            // await page.click('input[type="submit"]');
+                console.log('after eval team name')
             //  page.click does not work after Puppeteer 1.6
+            // await page.click('input[type="submit"]');
             await page.evaluate(() => document.querySelector('input.search-form-submit').click())
             
             await page.waitForSelector('div.colorblock');
             
-            // teamColors.add()
-            const hexColors = await page.$$eval('.colorblock', texts => {
+            const pageData = await page.$$eval('.colorblock', texts => {
                 return Array.from(texts, text => {
                    const colorData = text.innerText.split('\n');
+                //    const colorData = text.innerText;
+                   console.log(colorData)
                    return colorData;
                 })
             });
-            console.log(hexColors)
-            return(hexColors)
-                    
-                }
-        }
+            for (let arr of pageData) {
+                // console.log(arr);
+                let hex = reghex.exec(arr)[0];
+                // console.log(hex);
+                teamColors[teamName].push(hex);
+            }
+        console.log(teamColors)
+    }
 
-                
-
-
-                // const colorsC = new Array();
-                // for (let color of colors) {
-                //     colorsC.add(color.style)
-                // }
-
-                // await page.evaluate(() => {
-                //     console.log('inside data page evaluate')
-                //     const els = document.querySelectorAll('.colorblock');
-                //     console.log(els)
-                    // return getComputedStyle(colors);
-                    // console.log(getComputedStyle(els))
-                // });
-                // console.log(data)
-
-        // }
-    // }
-
-    // catch {
-    //     console.log("Houston Rockets, we've had a problem")
-    // }
+    catch {
+        console.log("Houston Rockets, we've had a problem")
+    }
 };
 
 // // console.log(rows);

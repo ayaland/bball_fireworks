@@ -25,7 +25,14 @@ app.use(express.static(path.join(__dirname, "frontend", "src")));
 
 app.get('/career', async (req, res) => {
     // let data = await scrapeStats(pageURL, req.query.name);
-    let data = await scrapeEverything(pageURL, colorsURL, req.query.name);
+    // try except
+    try {
+        let data = await scrapeEverything(pageURL, colorsURL, req.query.name);
+        res.json(data)
+        
+    } catch(error) {
+        res.status(500).json(error)
+    }
 
     // stats is an array of [[career stats], {teams played for}];
     // let stats = data[0];
