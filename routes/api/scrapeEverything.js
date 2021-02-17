@@ -19,6 +19,8 @@ const scrapeEverything = async (pageURL, colorsURL, pName) => {
     // return rowsandTeams;
 
     const teamColors = await scrapeColors(colorsURL, page, league, teams);
+
+    return teamColors
 };
 
 module.exports = scrapeEverything;

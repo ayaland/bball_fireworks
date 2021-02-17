@@ -78,41 +78,56 @@ const scrapeColors = async (colorsURL, page, league, teams) => {
                     window.teamName = teamName
                 },
                 teamName
-                );
-        }
-            // the HEX colors webpage has two search forms, this one seems unnecessary
-            // await page.waitForSelector('#searchform-2');
-            // await page.$eval('input[id ="searchform-2"]', 
-            //     (search) => (search.value = window.teamName));
+            );
 
             await page.waitForSelector('.search-form-input');
             console.log('after selector')
-            await page.$eval('input[class ="search-form-input"]', 
+            await page.$eval('input[class ="search-form-input"]',
                 (search) => (search.value = window.teamName));
-                console.log('after eval team name')
+            console.log('after eval team name')
             //  page.click does not work after Puppeteer 1.6
             // await page.click('input[type="submit"]');
             await page.evaluate(() => document.querySelector('input.search-form-submit').click())
-            
+
             await page.waitForSelector('div.colorblock');
-            
-            const pageData = await page.$$eval('.colorblock', texts => {
+
+            const pageData = await page.$$eval('div.colorblock', texts => {
                 return Array.from(texts, text => {
-                   const colorData = text.innerText.split('\n');
-                //    const colorData = text.innerText;
-                   console.log(colorData)
-                   return colorData;
+                    const colorData = text.innerText;
+                    // const colorData = text.innerText.split('\n');
+                    return colorData;
                 })
             });
+
             for (let arr of pageData) {
                 // console.log(arr);
                 let hex = reghex.exec(arr)[0];
                 // console.log(hex);
                 teamColors[teamName].push(hex);
+                // console.log(teamColors)
             }
-        console.log(teamColors)
-    }
 
+        return(teamColors)
+        
+        // return (pageData)
+        
+        //     const pageData = await page.$$eval('.colorblock', texts => {
+            //         return Array.from(texts, text => {
+        //            const colorData = text.innerText.split('\n');
+        //         //    const colorData = text.innerText;
+        //            console.log(colorData)
+        //            return colorData;
+        //         })
+        //     });
+        // for (let arr of pageData) {
+            //     // console.log(arr);
+            //     let hex = reghex.exec(arr)[0];
+            //     // console.log(hex);
+            //     teamColors[teamName].push(hex);
+        }
+            // console.log(teamColors)
+    }
+    
     catch {
         console.log("Houston Rockets, we've had a problem")
     }
@@ -127,3 +142,29 @@ const scrapeColors = async (colorsURL, page, league, teams) => {
 // return rows;
 
 module.exports = scrapeColors;
+
+
+
+
+
+// the HEX colors webpage has two search forms, this one seems unnecessary
+// await page.waitForSelector('#searchform-2');
+// await page.$eval('input[id ="searchform-2"]', 
+//     (search) => (search.value = window.teamName));
+
+// await page.waitForSelector('.search-form-input');
+//     console.log('after selector')
+//     await page.$eval('input[class ="search-form-input"]', 
+//         (search) => (search.value = window.teamName));
+//         console.log('after eval team name')
+//     //  page.click does not work after Puppeteer 1.6
+//     // await page.click('input[type="submit"]');
+//     await page.evaluate(() => document.querySelector('input.search-form-submit').click())
+
+//     await page.waitForSelector('div.colorblock');
+
+// const pageData = await page.$$eval('div.colorblock', texts => {
+//     return Array.from(texts, text => {
+//         const colorData = text.innerText;
+//         // const colorData = text.innerText.split('\n');
+//         return colorData;
