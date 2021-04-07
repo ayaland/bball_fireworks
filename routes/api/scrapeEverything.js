@@ -9,18 +9,27 @@ const scrapeEverything = async (pageURL, colorsURL, pName) => {
         slowMo: 50
     });
 
-    const page = await browser.newPage();
-    // const page = await browser.goto(pageURL);
     // any promise that needs to be resolved uses 'await'
+    // const page = await browser.goto(pageURL);
+    const page = await browser.newPage();
+
+    // scrape basketball-reference
     const rowsandTeams = await scrapeStats(pageURL, page, pName);
-    const teams = rowsandTeams[1]; // set of all team acronyms
+    // seasons format is [[age, team, league, etc.], [age, team, league, etc.]]
     const seasons = rowsandTeams[0]; // array of (W)NBA season stats
+    // console.log(seasons)
+
+    // scrape teamcolorcodes.com
+    const teams = rowsandTeams[1]; // set of all team acronyms
     const league = seasons[0][2];
-    // return rowsandTeams;
-
+    
     const teamColors = await scrapeColors(colorsURL, page, league, teams);
-
-    return teamColors
+    
+    // return rowsandTeams;
+    // teamColors format is { Team1: [team1, hex, color, codes],
+    //                        Team2: [team2, hex, color, codes]
+    //                      }
+    return { seasons, teamColors }
 };
 
 module.exports = scrapeEverything;

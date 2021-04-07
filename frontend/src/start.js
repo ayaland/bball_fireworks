@@ -15,6 +15,7 @@ export const getCanvas = () => {
 }
 
 window.addEventListener('DOMContentLoaded', () => {
+    // show should be instantiated in .then((data))
     const show = new BballFireworks(getCanvas());
     const addFireworkButton = document.getElementById('addFirework');
     let addNameField = document.getElementById('submitButton');
@@ -26,9 +27,18 @@ window.addEventListener('DOMContentLoaded', () => {
                  name: pName 
             } 
         })
-        .then((data) => {
-            console.log(data)
-        });
+        .then(() => {
+
+            // start bballfireworks shows
+            // setInterval(() => {
+            //     show.clearCanvas();
+            //     show.draw();
+            //     show.updateObjects();
+            //     show.launchFirework();
+            // for (let i = 0; i < data.length; i++) {
+            //     }, 20);
+            }
+        );
     });
 
     addFireworkButton.addEventListener('click', (e) => {
@@ -37,12 +47,16 @@ window.addEventListener('DOMContentLoaded', () => {
             // show.draw();
             // show.updateObjects();
             // show.launchFirework();
-        setInterval(() => {
-            show.clearCanvas();
-            show.draw();
-            show.updateObjects();
-            show.launchFirework();
-        }, 20);
+            
+        // setInterval(() => {
+        //     show.clearCanvas();
+        //     show.draw();
+        //     show.updateObjects();
+        //     show.launchFirework();
+        // }, 20);
+
+        // window.requestAnimationFrame(show.loop(4000))
+        show.animate4Seconds();
     });
 })
 

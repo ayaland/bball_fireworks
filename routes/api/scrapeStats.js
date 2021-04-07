@@ -35,7 +35,7 @@ const scrapeStats = async (pageURL, page, pName) => {
             // here we take the 2nd entry of each array
             teams.add(row[1]);
         }
-
+        // console.log(rows)
         return [
             rows,
             teams
