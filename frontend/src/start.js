@@ -30,13 +30,7 @@ window.addEventListener('DOMContentLoaded', () => {
         .then(() => {
 
             // start bballfireworks shows
-            // setInterval(() => {
-            //     show.clearCanvas();
-            //     show.draw();
-            //     show.updateObjects();
-            //     show.launchFirework();
-            // for (let i = 0; i < data.length; i++) {
-            //     }, 20);
+            show.animateSeason()
             }
         );
     });
@@ -56,7 +50,12 @@ window.addEventListener('DOMContentLoaded', () => {
         // }, 20);
 
         // window.requestAnimationFrame(show.loop(4000))
-        show.animate4Seconds();
+        
+        let gamesPlayed = [80, 52, 75, 3, 50]
+        for (let i = 0; i <= gamesPlayed.length - 1; i++) {
+            console.log(gamesPlayed[i])
+            show.animateSeason(gamesPlayed[i])
+        }
     });
 })
 
@@ -68,6 +67,3 @@ window.requestAnimFrame = (() => {
             window.setTimeout(callback, 1000 / 60);
         };
 })();
-
-// module.exports({ getCanvas : getCanvas })
-// window.onload = show.loop;

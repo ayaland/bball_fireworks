@@ -47,7 +47,6 @@ class Star {
         // console.log(this.trail)
         this.trail.pop(); // remove last element, like the spark fades out
         this.trail.unshift([this.x, this.y]);
-        // console.log(this.trail)
         this.speed *= FRICTION;
         if (this.destinationX <= this.x) {
             this.x -= (this.lengthX / this.r) * this.speed;

@@ -47,12 +47,13 @@ class BballFireworks {
         }
     }
 
-    updateFireworks() {
-        for (let i = this.fireworks.length - 1; i >= 0; i--) {
-            this.fireworks[i].draw();
-            this.fireworks[i].update(i);
-        }
-    }
+    // updateFireworks() {
+    //     for (let i = this.fireworks.length - 1; i >= 0; i--) {
+    //         console.log('updateFireworks')
+    //         this.fireworks[i].draw();
+    //         this.fireworks[i].update(i);
+    //     }
+    // }
 
     allObjects() {
         return [].concat (
@@ -111,23 +112,53 @@ class BballFireworks {
     //     }
     // }
 
-    animate4Seconds() {
+    animateSeason(gamesPlayed) {
         let start = Date.now();
         let that = this;
         function loop() {
-            if (Date.now() - start < 4000) {
-                debugger;
+            if (
+                Date.now() - start < (gamesPlayed * 100) 
+                // &&
+                // (that.fireworks.length > 0)
+                ) {
                 requestAnimFrame(loop);
                 that.clearCanvas();
                 that.draw();
                 that.updateObjects();
                 that.launchFirework();
-            }
-                // this.updateFireworks();
-            // }
+                if (that.fireworks.length == 0) {
+                    console.log('no fireworks')
+
+                    }
+                }
         };
         loop();
     }
+
+    // animate4Seconds() {
+    //     let start = Date.now();
+    //     let that = this;
+    //     function loop() {
+    //         if (Date.now() - start < 4000) {
+    //             debugger;
+    //             requestAnimFrame(loop);
+    //             that.clearCanvas();
+    //             that.draw();
+    //             that.updateObjects();
+    //             that.launchFirework();
+    //         }
+    //             // this.updateFireworks();
+    //         // }
+    //     };
+    //     loop();
+    // }
+
+    requestAnimFrame = (() => {
+        return requestAnimationFrame ||
+            function (callback) {
+                setTimeout(callback, 1000 / 60);
+            };
+    })();
 }
 
 export default BballFireworks;
