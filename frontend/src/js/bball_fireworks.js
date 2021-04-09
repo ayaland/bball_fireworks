@@ -13,13 +13,14 @@ class BballFireworks {
         this.fireworks = [];
         this.stars = []
         this.ticksSinceFirework = 20;
+        this.frameId = null;
+
         this.removeFirework = this.removeFirework.bind(this);
         this.removeStar = this.removeStar.bind(this);
         
-        this.updateFireworks = this.updateFireworks.bind(this);
         this.launchFirework = this.launchFirework.bind(this);
         this.clearCanvas = this.clearCanvas.bind(this);
-        this.animate4Seconds = this.animate4Seconds.bind(this);
+        this.animateSeason = this.animateSeason.bind(this);
 
         // this.loop = this.loop.bind(this);
         this.start = Date.now();
@@ -96,22 +97,6 @@ class BballFireworks {
         this.stars.splice(index, 1) 
     }
 
-    // loop(num) {
-    //     // console.log(this.start)
-    //     // console.log(Date.now())
-    //     while (this.start + num > Date.now()) {
-    //         debugger;
-    //         // console.log('inside while loop')
-    //         console.log('dadf')
-    //         // window.requestAnimFrame(this.loop(num));
-    //         // this.clearCanvas();
-    //         this.clearCanvas.call(this);
-    //         this.draw();
-    //         this.updateObjects();
-    //         this.launchFirework();
-    //     }
-    // }
-
     animateSeason(gamesPlayed) {
         let start = Date.now();
         let that = this;
@@ -121,44 +106,34 @@ class BballFireworks {
                 // &&
                 // (that.fireworks.length > 0)
                 ) {
-                requestAnimFrame(loop);
-                that.clearCanvas();
-                that.draw();
-                that.updateObjects();
-                that.launchFirework();
-                if (that.fireworks.length == 0) {
-                    console.log('no fireworks')
-
+                    that.frameId = requestAnimationFrame(loop);
+                    // console.log('animateSeason loop')
+                    that.clearCanvas();
+                    that.draw();
+                    that.updateObjects();
+                    that.launchFirework();
+                    if (that.fireworks.length == 0) {
+                        // console.log('no fireworks')
                     }
+                } else {
+                    console.log('cancelAnimationFrame')
+                    cancelAnimationFrame(that.frameId)
                 }
         };
         loop();
     }
 
-    // animate4Seconds() {
-    //     let start = Date.now();
-    //     let that = this;
-    //     function loop() {
-    //         if (Date.now() - start < 4000) {
-    //             debugger;
-    //             requestAnimFrame(loop);
-    //             that.clearCanvas();
-    //             that.draw();
-    //             that.updateObjects();
-    //             that.launchFirework();
-    //         }
-    //             // this.updateFireworks();
-    //         // }
-    //     };
-    //     loop();
-    // }
+    // requestAnimFrame = (() => {
+    //     return requestAnimationFrame ||
+    //         function (callback) {
+    //             setTimeout(callback, 1000 / 60);
+    //         };
+    // })();
 
-    requestAnimFrame = (() => {
-        return requestAnimationFrame ||
-            function (callback) {
-                setTimeout(callback, 1000 / 60);
-            };
-    })();
+    // requestAnimFrame(loop) {
+    //     requestAnimationFrame ||
+    //             setTimeout(loop, 1000 / 60);
+    // }
 }
 
 export default BballFireworks;

@@ -51,7 +51,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
         // window.requestAnimationFrame(show.loop(4000))
         
-        let gamesPlayed = [80, 52, 75, 3, 50]
+        let gamesPlayed = [80]
         for (let i = 0; i <= gamesPlayed.length - 1; i++) {
             console.log(gamesPlayed[i])
             show.animateSeason(gamesPlayed[i])
