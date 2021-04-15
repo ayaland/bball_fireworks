@@ -82,7 +82,7 @@ const scrapeColors = async (colorsURL, page, league, teams) => {
             // console.log('page evaluated teamName')
 
             await page.waitForSelector('.search-form-input');
-            await page.$eval('input[class ="search-form-input"]',
+            await page.$eval('input[class="search-form-input"]',
                 (search) => (search.value = window.teamName));
             // page.click does not work after Puppeteer 1.6
             // await page.click('input[type="submit"]');

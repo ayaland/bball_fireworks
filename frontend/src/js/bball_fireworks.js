@@ -27,9 +27,6 @@ class BballFireworks {
         this.start = Date.now();
         this.isRunning = false;
         this.i = 0;
-        
-        // this.ctx = this.ctx.bind(this);
-        // this.ppg = season[-1]
     }
 
     getName() {
@@ -84,22 +81,22 @@ class BballFireworks {
             let currentSpark = this.sparks[i];
             if (x === currentSpark.x && y === currentSpark.y) {
                 index = i;
-                // this.sparks.splice(index, 1)
             }
         }
         this.sparks.splice(index, 1) 
     }
 
-    animateSeason(digits) {
-        console.log('animateSeason')
-        console.log(digits)
+    animateSeason(gamesPlayed) {
+        // console.log('animateSeason')
+        // console.log(gamesPlayed)
 
         let that = this;
-        console.log(that.i)
         let start = Date.now();
-        function loop() {
+        that.season = gamesPlayed;
+
+        function loop(gp=gamesPlayed[0]) {
             if (
-                Date.now() - start < (digits * 100) 
+                Date.now() - start < (that.season[that.i] * 100) 
                 // &&
                 // (that.fireworks.length > 0)
                 ) {
@@ -112,7 +109,7 @@ class BballFireworks {
                     that.launchFirework();
 
                 } else if (that.seasons[that.i + 1] != null) {
-                    // console.log(that.i)
+                    console.log('else if')
                     that.i++;
                     // console.log(that.i)
                     that.isRunning = false;
@@ -124,6 +121,7 @@ class BballFireworks {
                     if (that.fireworks.length == 0) {
                         // console.log('no fireworks')
                     }
+                    console.log('else')
                     cancelAnimationFrame(that.frameId);
                 };
         };
@@ -135,7 +133,8 @@ class BballFireworks {
         if (that.isRunning == false) {
             // console.log('nextLoop')
             // console.log(gamesPlayed)
-            this.animateSeason(gamesPlayed);
+            that.animateSeason.loop(gamesPlayed)
+            // this.animateSeason(gamesPlayed);
         };
     };
 };

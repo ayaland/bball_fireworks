@@ -23,7 +23,9 @@ const scrapeEverything = async (pageURL, colorsURL, pName) => {
         const teams = rowsandTeams[1]; // set of all team acronyms
         const league = seasons[0][2];
         // console.log('bballreference done')
-        const teamColors = await scrapeColors(colorsURL, page, league, teams);
+
+        const pageTwo = await browser.newPage();
+        const teamColors = await scrapeColors(colorsURL, pageTwo, league, teams);
         // console.log('teamColors done')
         // return rowsandTeams;
         // teamColors format is { Team1: [team1's, hex, color, codes],

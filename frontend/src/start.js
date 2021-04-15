@@ -29,17 +29,18 @@ window.addEventListener('DOMContentLoaded', () => {
         })
         .then((data) => {
             const body = data.data;
+
             let seasons = body.seasons;
             console.log(seasons)
-            // let teamC = [];
-            // teamC = dataDump.teamColors;
-            // console.log(teamC);
-            let gp = [];
+            let teamColors = body.teamColors;
+            console.log(teamColors);
+
+            let gamesPlayed = [];
             for (let i = 0; i < seasons.length; i++) {
-                gp.push(seasons[i][4])
+                gamesPlayed.push(parseInt(seasons[i][4]))
             }
             // start bballfireworks show
-            show.animateSeason(gp)
+            show.animateSeason(gamesPlayed)
             }
         );
     });
