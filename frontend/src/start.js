@@ -16,7 +16,7 @@ export const getCanvas = () => {
 
 window.addEventListener('DOMContentLoaded', () => {
     // show should be instantiated in .then((data))
-    const show = new BballFireworks(getCanvas());
+    const show = new BballFireworks(getCanvas(), [40, 50, 20, 70]);
     const addFireworkButton = document.getElementById('addFirework');
     let addNameField = document.getElementById('submitButton');
 
@@ -41,21 +41,15 @@ window.addEventListener('DOMContentLoaded', () => {
             // show.draw();
             // show.updateObjects();
             // show.launchFirework();
-            
-        // setInterval(() => {
-        //     show.clearCanvas();
-        //     show.draw();
-        //     show.updateObjects();
-        //     show.launchFirework();
-        // }, 20);
 
         // window.requestAnimationFrame(show.loop(4000))
-        
-        let gamesPlayed = [80]
-        for (let i = 0; i <= gamesPlayed.length - 1; i++) {
-            console.log(gamesPlayed[i])
-            show.animateSeason(gamesPlayed[i])
-        }
+
+        let gamesPlayed = [80, 50, 20, 70]
+        // for (let i = 0; i <= gamesPlayed.length - 1; i++) {
+            // show.animateSeason(gamesPlayed)
+            // show.helper(gamesPlayed)
+            show.animateSeason()
+        // }
     });
 })
 

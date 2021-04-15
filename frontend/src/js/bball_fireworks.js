@@ -7,13 +7,14 @@ const TICKS_MIN = 25;
 const TICKS_MAX = 30;
 
 class BballFireworks {
-    constructor(canvasContextObject, season) {
+    constructor(canvasContextObject, seasons) {
         this.canvas = canvasContextObject.canvas;
         this.ctx = canvasContextObject.ctx;
         this.fireworks = [];
         this.stars = []
         this.ticksSinceFirework = 20;
         this.frameId = null;
+        this.seasons = seasons;
 
         this.removeFirework = this.removeFirework.bind(this);
         this.removeStar = this.removeStar.bind(this);
@@ -21,9 +22,12 @@ class BballFireworks {
         this.launchFirework = this.launchFirework.bind(this);
         this.clearCanvas = this.clearCanvas.bind(this);
         this.animateSeason = this.animateSeason.bind(this);
+        this.nextLoop = this.nextLoop.bind(this);
 
         // this.loop = this.loop.bind(this);
         this.start = Date.now();
+        this.isRunning = false;
+        this.i = 0;
         
         // this.ctx = this.ctx.bind(this);
         // this.ppg = season[-1]
@@ -47,14 +51,6 @@ class BballFireworks {
         this.ticksSinceFirework++;
         }
     }
-
-    // updateFireworks() {
-    //     for (let i = this.fireworks.length - 1; i >= 0; i--) {
-    //         console.log('updateFireworks')
-    //         this.fireworks[i].draw();
-    //         this.fireworks[i].update(i);
-    //     }
-    // }
 
     allObjects() {
         return [].concat (
@@ -97,30 +93,57 @@ class BballFireworks {
         this.stars.splice(index, 1) 
     }
 
-    animateSeason(gamesPlayed) {
-        let start = Date.now();
+    animateSeason(digits=this.seasons[0]) {
+        console.log('animateSeason')
+        // console.log(digits)
         let that = this;
-        function loop() {
-            if (
-                Date.now() - start < (gamesPlayed * 100) 
-                // &&
-                // (that.fireworks.length > 0)
-                ) {
-                    that.frameId = requestAnimationFrame(loop);
-                    // console.log('animateSeason loop')
-                    that.clearCanvas();
-                    that.draw();
-                    that.updateObjects();
-                    that.launchFirework();
-                    if (that.fireworks.length == 0) {
-                        // console.log('no fireworks')
+        console.log(that.i)
+        // for (let i = 0; i <= gamesPlayed.length - 1; i++) {
+        let start = Date.now();
+            function loop() {
+                if (
+                    Date.now() - start < (digits * 100) 
+                    // &&
+                    // (that.fireworks.length > 0)
+                    ) {
+                        that.isRunning = true;
+                        that.frameId = requestAnimationFrame(loop);
+                        // console.log('animateSeason loop')
+                        that.clearCanvas();
+                        that.draw();
+                        that.updateObjects();
+                        that.launchFirework();
+
+                    } else if (that.seasons[that.i + 1] != null) {
+                        // console.log(that.i)
+                        that.i++;
+                        // console.log(that.i)
+                        that.isRunning = false;
+                        cancelAnimationFrame(that.frameId);
+                        // call next anim loop
+                        that.nextLoop(that.seasons[that.i]);
+                        // helper(gamesPlayed[i])
+                    } else {
+                        if (that.fireworks.length == 0) {
+                            // console.log('no fireworks')
+                        }
+                        cancelAnimationFrame(that.frameId);
                     }
-                } else {
-                    console.log('cancelAnimationFrame')
-                    cancelAnimationFrame(that.frameId)
-                }
-        };
-        loop();
+            };
+            loop();
+        // }
+    }
+
+    nextLoop(gamesPlayed) {
+        let that = this;
+        // for (let i = 0; i <= gamesPlayed.length - 1; i++) {
+            if (that.isRunning == false) {
+                console.log('nextLoop')
+                // console.log(gamesPlayed)
+                this.animateSeason(gamesPlayed)
+            }
+        // }
+        
     }
 
     // requestAnimFrame = (() => {
