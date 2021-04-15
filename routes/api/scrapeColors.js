@@ -65,7 +65,6 @@ const scrapeColors = async (colorsURL, page, league, teams) => {
                 let teamName = WNBA[team];
                 teamColors[teamName] = [];
             }
-            // console.log(teamColors)
         };
         
         // loop over team names (keys) in the Object
@@ -80,6 +79,7 @@ const scrapeColors = async (colorsURL, page, league, teams) => {
                 },
                 teamName
             );
+            // console.log('page evaluated teamName')
 
             await page.waitForSelector('.search-form-input');
             await page.$eval('input[class ="search-form-input"]',
@@ -89,13 +89,16 @@ const scrapeColors = async (colorsURL, page, league, teams) => {
             await page.evaluate(() => document.querySelector('input.search-form-submit').click())
 
             await page.waitForSelector('div.colorblock');
+            // console.log('div.colorblock found')
 
             const pageData = await page.$$eval('div.colorblock', texts => {
+                // console.log('inside pageData')
                 return Array.from(texts, text => {
                     const colorData = text.innerText;
                     return colorData;
                 })
             });
+            // console.log('after pageData')
 
             for (let arr of pageData) {
                 // console.log(arr);
@@ -105,13 +108,13 @@ const scrapeColors = async (colorsURL, page, league, teams) => {
                 // console.log(teamColors)
             }
 
-        return(teamColors)
-        
+        return(teamColors);
         }
     }
     
-    catch {
+    catch(error) {
         console.log("Houston Rockets, we've had a problem")
+        console.log(error);
     }
 };
 

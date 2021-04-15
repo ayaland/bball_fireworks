@@ -27,7 +27,8 @@ app.get('/career', async (req, res) => {
     try {
         let data = await scrapeEverything(pageURL, colorsURL, req.query.name);
         res.json(data)
-        
+        // console.log(data)
+
     } catch(error) {
         res.status(500).json(error)
     }

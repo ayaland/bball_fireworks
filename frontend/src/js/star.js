@@ -44,7 +44,6 @@ class Star {
     }
 
     update() {
-        // console.log(this.trail)
         this.trail.pop(); // remove last element, like the spark fades out
         this.trail.unshift([this.x, this.y]);
         this.speed *= FRICTION;
@@ -67,10 +66,10 @@ class Star {
                 }
             }            
         }
-        // stars going down
+        // sparks going down
         if (this.destinationY < this.y) {
             this.y += (this.lengthY / this.r) * this.speed;
-        // stars going up
+        // sparks going up
         } else {
             this.y -= (this.lengthY / this.r) * this.speed;
         }
@@ -78,7 +77,7 @@ class Star {
         this.transparency -= this.decay;
         if (this.transparency <= this.decay) {
             // console.log('inside transparency decay')
-            this.show.removeStar(this.x, this.y);
+            this.show.removeSpark(this.x, this.y);
         }
     }
 

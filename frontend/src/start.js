@@ -15,22 +15,31 @@ export const getCanvas = () => {
 }
 
 window.addEventListener('DOMContentLoaded', () => {
-    // show should be instantiated in .then((data))
-    const show = new BballFireworks(getCanvas(), [40, 50, 20, 70]);
+    const show = new BballFireworks(getCanvas());
     const addFireworkButton = document.getElementById('addFirework');
     let addNameField = document.getElementById('submitButton');
-
+    
     addNameField.addEventListener('click', (e) => {
         let pName = utils.saveName();
+        // let seasons = [40, 50, 20];
         axios.get('/career', {
-             params: { 
-                 name: pName 
+            params: { 
+                name: pName 
             } 
         })
-        .then(() => {
-
-            // start bballfireworks shows
-            show.animateSeason()
+        .then((data) => {
+            const body = data.data;
+            let seasons = body.seasons;
+            console.log(seasons)
+            // let teamC = [];
+            // teamC = dataDump.teamColors;
+            // console.log(teamC);
+            let gp = [];
+            for (let i = 0; i < seasons.length; i++) {
+                gp.push(seasons[i][4])
+            }
+            // start bballfireworks show
+            show.animateSeason(gp)
             }
         );
     });
@@ -42,14 +51,7 @@ window.addEventListener('DOMContentLoaded', () => {
             // show.updateObjects();
             // show.launchFirework();
 
-        // window.requestAnimationFrame(show.loop(4000))
-
-        let gamesPlayed = [80, 50, 20, 70]
-        // for (let i = 0; i <= gamesPlayed.length - 1; i++) {
-            // show.animateSeason(gamesPlayed)
-            // show.helper(gamesPlayed)
-            show.animateSeason()
-        // }
+            show.animateSeason(seasons)
     });
 })
 

@@ -45,7 +45,7 @@ class Firework {
         }
 
         this.numStars = NUM_STARS;
-        this.stars = [];
+        this.sparks = [];
         
         this.acceleration = FIREWORK_ACCELERATION;
         this.speed = FIREWORK_SPEED;
@@ -66,7 +66,7 @@ class Firework {
         
         if (this.y <= this.destinationY) {
             this.createStars();
-            if (this.stars.length <= 0) {
+            if (this.sparks.length <= 0) {
                 this.show.removeFirework();
             }
         } else {
@@ -98,14 +98,9 @@ class Firework {
     }
     
     createStars() {
-        // console.log('in createStars')
-        // while (this.numStars--) {
-        //     const star = new Star(this.destinationX, this.destinationY, this.ctx, this.blastRadius, this);
-        //     this.stars.push(star)
-        // }
         for (let i = this.numStars; i > 0; i--) {
             const star = new Star(this.destinationX, this.destinationY, this.ctx, this.blastRadius, this, this.show);
-            this.show.stars.push(star)
+            this.show.sparks.push(star)
         }
     }
 }
