@@ -87,54 +87,51 @@ class BballFireworks {
     }
 
     animateSeason(gamesPlayed) {
-        // console.log('animateSeason')
-        // console.log(gamesPlayed)
-
         let that = this;
         let start = Date.now();
-        that.season = gamesPlayed;
+        that.seasons = gamesPlayed;
+        console.log(gamesPlayed)
 
-        function loop(gp=gamesPlayed[0]) {
+        function loop() {
             if (
-                Date.now() - start < (that.season[that.i] * 100) 
+                Date.now() - start < (that.seasons[that.i] * 100) 
                 // &&
                 // (that.fireworks.length > 0)
                 ) {
                     that.isRunning = true;
                     that.frameId = requestAnimationFrame(loop);
-                    // console.log('animateSeason loop')
                     that.clearCanvas();
                     that.draw();
                     that.updateObjects();
                     that.launchFirework();
 
-                } else if (that.seasons[that.i + 1] != null) {
+                } else if (that.seasons[that.i + 1]) {
                     console.log('else if')
                     that.i++;
                     // console.log(that.i)
                     that.isRunning = false;
                     cancelAnimationFrame(that.frameId);
                     // call next anim loop
-                    that.nextLoop(that.seasons[that.i]);
-                    // helper(gamesPlayed[i])
+                    that.nextLoop();
                 } else {
                     if (that.fireworks.length == 0) {
                         // console.log('no fireworks')
                     }
-                    console.log('else')
                     cancelAnimationFrame(that.frameId);
                 };
         };
         loop();
     };
 
-    nextLoop(gamesPlayed) {
+    nextLoop() {
+        debugger;
+        console.log(this)
         let that = this;
         if (that.isRunning == false) {
             // console.log('nextLoop')
             // console.log(gamesPlayed)
-            that.animateSeason.loop(gamesPlayed)
-            // this.animateSeason(gamesPlayed);
+            that.animateSeason(that.seasons)
+            console.log('if statement')
         };
     };
 };

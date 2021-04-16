@@ -71,7 +71,6 @@ const scrapeColors = async (colorsURL, page, league, teams) => {
         // put them in input field
         // scrape hex codes for colors
         for (let [teamName, hexCodes] of Object.entries(teamColors)) {
-            // console.log(`${teamName}: ${hexCodes}`);
             await page.goto(colorsURL);
             await page.evaluate(
                 (teamName) => {
@@ -79,7 +78,6 @@ const scrapeColors = async (colorsURL, page, league, teams) => {
                 },
                 teamName
             );
-            // console.log('page evaluated teamName')
 
             await page.waitForSelector('.search-form-input');
             await page.$eval('input[class="search-form-input"]',
@@ -89,23 +87,17 @@ const scrapeColors = async (colorsURL, page, league, teams) => {
             await page.evaluate(() => document.querySelector('input.search-form-submit').click())
 
             await page.waitForSelector('div.colorblock');
-            // console.log('div.colorblock found')
 
             const pageData = await page.$$eval('div.colorblock', texts => {
-                // console.log('inside pageData')
                 return Array.from(texts, text => {
                     const colorData = text.innerText;
                     return colorData;
                 })
             });
-            // console.log('after pageData')
 
             for (let arr of pageData) {
-                // console.log(arr);
                 let hex = reghex.exec(arr)[0];
-                // console.log(hex);
                 teamColors[teamName].push(hex);
-                // console.log(teamColors)
             }
 
         return(teamColors);

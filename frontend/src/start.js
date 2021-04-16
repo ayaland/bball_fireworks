@@ -31,9 +31,9 @@ window.addEventListener('DOMContentLoaded', () => {
             const body = data.data;
 
             let seasons = body.seasons;
-            console.log(seasons)
+            // console.log(seasons)
             let teamColors = body.teamColors;
-            console.log(teamColors);
+            // console.log(teamColors);
 
             let gamesPlayed = [];
             for (let i = 0; i < seasons.length; i++) {

@@ -19,6 +19,7 @@ const PADDING_Y = 80;
 
 const HUE_STEP_INCREASE = 1.5;
 
+// Dedicated to Mrs. Voula Steinberg - thank you for the Trigonometry education
 class Firework {
     constructor(canvas, ctx, show) {
         this.canvas = canvas;
