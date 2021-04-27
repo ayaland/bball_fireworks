@@ -5,6 +5,7 @@ const CANVAS_CLEANUP = 0.3;
 // tie TICKS_MIN and TICKS_MAX to PPG
 const TICKS_MIN = 25;
 const TICKS_MAX = 30;
+const SEASON_LENGTH = 4;
 
 class BballFireworks {
     constructor(canvasContextObject) {
@@ -15,6 +16,7 @@ class BballFireworks {
         this.seasons = [];
         this.ticksSinceFirework = 20;
         this.frameId = null;
+        this.colors = {};
 
         this.removeFirework = this.removeFirework.bind(this);
         this.removeSpark = this.removeSpark.bind(this);
@@ -24,15 +26,14 @@ class BballFireworks {
         this.animateSeason = this.animateSeason.bind(this);
         this.nextLoop = this.nextLoop.bind(this);
 
-        this.start = Date.now();
+        // this.start = Date.now();
         this.isRunning = false;
         this.i = 0;
     }
 
-    getName() {
-        const playerName = document.getElementById("pname");
-        // alert(playerName);
-    }
+    // getName() {
+    //     const playerName = document.getElementById("pname");
+    // }
     
     launchFirework() {
         if (this.ticksSinceFirework >= utils.randomIntFromRange(TICKS_MIN, TICKS_MAX)) {
@@ -86,34 +87,34 @@ class BballFireworks {
         this.sparks.splice(index, 1) 
     }
 
-    animateSeason(gamesPlayed) {
+    animateSeason(gamesPlayed, teamColors) {
         let that = this;
         let start = Date.now();
+        
         that.seasons = gamesPlayed;
-        console.log(gamesPlayed)
+        that.colors = teamColors;
 
         function loop() {
             if (
-                Date.now() - start < (that.seasons[that.i] * 100) 
-                // &&
-                // (that.fireworks.length > 0)
-                ) {
+                // Date.now() - start < (that.seasons[that.i] * 100) 
+                Date.now() - start < (SEASON_LENGTH * 1000)) {
                     that.isRunning = true;
                     that.frameId = requestAnimationFrame(loop);
                     that.clearCanvas();
                     that.draw();
                     that.updateObjects();
                     that.launchFirework();
+                } 
 
-                } else if (that.seasons[that.i + 1]) {
-                    console.log('else if')
+            else if (that.seasons[that.i + 1]) {
                     that.i++;
-                    // console.log(that.i)
                     that.isRunning = false;
                     cancelAnimationFrame(that.frameId);
                     // call next anim loop
                     that.nextLoop();
-                } else {
+                } 
+
+            else {
                     if (that.fireworks.length == 0) {
                         // console.log('no fireworks')
                     }
@@ -124,8 +125,6 @@ class BballFireworks {
     };
 
     nextLoop() {
-        debugger;
-        console.log(this)
         let that = this;
         if (that.isRunning == false) {
             // console.log('nextLoop')

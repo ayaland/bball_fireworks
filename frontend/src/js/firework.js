@@ -1,13 +1,11 @@
 const utils = require('./utils');
 import Star from './star';
 
-// const FIREWORK_ACCELERATION = -0.9;
 const FIREWORK_ACCELERATION = 0.97;
 const FIREWORK_BRIGHTNESS_MIN = 50;
 const FIREWORK_BRIGHTNESS_MAX = 70;
 const FIREWORK_SPEED = 10;
 const FIREWORK_TRAIL_LENGTH = 1;
-// const FIREWORK_TARGET = true;
 
 const FIREWORK_DECAY_MIN = 0.015;
 const FIREWORK_DECAY_MAX = 0.03;
@@ -37,8 +35,6 @@ class Firework {
         this.distanceToGo = this.canvas.height - this.destinationY;
         this.distanceTraveled = 0;
 
-        // this.v1 = createVector(this.destinationX, this.destinationY);
-
         this.trail = [];
         this.trailLength = FIREWORK_TRAIL_LENGTH;
         while (this.trailLength--) {
@@ -52,6 +48,7 @@ class Firework {
         this.speed = FIREWORK_SPEED;
         
         this.brightness = utils.random(FIREWORK_BRIGHTNESS_MIN, FIREWORK_BRIGHTNESS_MAX);
+        // Ayanote: tie this to random selection from team colors of the season
         this.hue = 120;
         
         this.createStars = this.createStars.bind(this);

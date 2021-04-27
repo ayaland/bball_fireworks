@@ -40,7 +40,7 @@ window.addEventListener('DOMContentLoaded', () => {
                 gamesPlayed.push(parseInt(seasons[i][4]))
             }
             // start bballfireworks show
-            show.animateSeason(gamesPlayed)
+            show.animateSeason(gamesPlayed, teamColors)
             }
         );
     });
