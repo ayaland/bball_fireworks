@@ -21,7 +21,6 @@ window.addEventListener('DOMContentLoaded', () => {
     
     addNameField.addEventListener('click', (e) => {
         let pName = utils.saveName();
-        // let seasons = [40, 50, 20];
         axios.get('/career', {
             params: { 
                 name: pName 
@@ -35,10 +34,10 @@ window.addEventListener('DOMContentLoaded', () => {
             let teamColors = body.teamColors;
             // console.log(teamColors);
 
-            let gamesPlayed = [];
-            for (let i = 0; i < seasons.length; i++) {
-                gamesPlayed.push(parseInt(seasons[i][4]))
-            }
+            let gamesPlayed = [82, 50, 42];
+            // for (let i = 0; i < seasons.length; i++) {
+            //     gamesPlayed.push(parseInt(seasons[i][4]))
+            // }
             // start bballfireworks show
             show.animateSeason(gamesPlayed, teamColors)
             }

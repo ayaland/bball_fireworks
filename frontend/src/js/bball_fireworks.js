@@ -1,11 +1,14 @@
 const utils = require('./utils');
 import Firework from './firework';
 
+// --- FUTURE NOTES ---
+// can also tie ticksMin to fga
+
 const CANVAS_CLEANUP = 0.3;
-// tie TICKS_MIN and TICKS_MAX to PPG
-const TICKS_MIN = 25;
-const TICKS_MAX = 30;
+// length of a season's fireworks show in seconds
 const SEASON_LENGTH = 4;
+// currently there is no easy way to get total # games a non-standard season had
+const TICKS_MAX = 82;
 
 class BballFireworks {
     constructor(canvasContextObject) {
@@ -26,18 +29,14 @@ class BballFireworks {
         this.animateSeason = this.animateSeason.bind(this);
         this.nextLoop = this.nextLoop.bind(this);
 
-        // this.start = Date.now();
         this.isRunning = false;
         this.i = 0;
     }
-
-    // getName() {
-    //     const playerName = document.getElementById("pname");
-    // }
     
-    launchFirework() {
-        if (this.ticksSinceFirework >= utils.randomIntFromRange(TICKS_MIN, TICKS_MAX)) {
-            this.fireworks.push(new Firework(this.canvas, this.ctx, this));
+    launchFirework(gamesPlayedInSeason, color) {
+        let ticksMin = 100 - gamesPlayedInSeason;
+        if (this.ticksSinceFirework >= utils.randomIntFromRange(ticksMin, TICKS_MAX)) {
+            this.fireworks.push(new Firework(this.canvas, this.ctx, this, color));
             this.ticksSinceFirework = 0;
             
         } else {
@@ -103,7 +102,7 @@ class BballFireworks {
                     that.clearCanvas();
                     that.draw();
                     that.updateObjects();
-                    that.launchFirework();
+                    that.launchFirework(that.seasons[that.i], color);
                 } 
 
             else if (that.seasons[that.i + 1]) {
@@ -127,10 +126,7 @@ class BballFireworks {
     nextLoop() {
         let that = this;
         if (that.isRunning == false) {
-            // console.log('nextLoop')
-            // console.log(gamesPlayed)
             that.animateSeason(that.seasons)
-            console.log('if statement')
         };
     };
 };

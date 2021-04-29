@@ -10,7 +10,7 @@ const FIREWORK_TRAIL_LENGTH = 1;
 const FIREWORK_DECAY_MIN = 0.015;
 const FIREWORK_DECAY_MAX = 0.03;
 const FIREWORK_CLEANUP = 0.3;
-const NUM_STARS = 20;
+const NUM_SPARKS = 20;
 
 const PADDING_X = 80;
 const PADDING_Y = 80;
@@ -19,10 +19,11 @@ const HUE_STEP_INCREASE = 1.5;
 
 // Dedicated to Mrs. Voula Steinberg - thank you for the Trigonometry education
 class Firework {
-    constructor(canvas, ctx, show) {
+    constructor(canvas, ctx, show, color) {
         this.canvas = canvas;
         this.ctx = ctx;
         this.show = show;
+        this.color = color;
 
         this.stageWidth = this.canvas.width - PADDING_X;
         this.stageHeight = this.canvas.height - PADDING_Y;
@@ -41,7 +42,7 @@ class Firework {
             this.trail.push([this.x, this.y]);
         }
 
-        this.numStars = NUM_STARS;
+        this.numSparks = NUM_SPARKS;
         this.sparks = [];
         
         this.acceleration = FIREWORK_ACCELERATION;
@@ -96,9 +97,9 @@ class Firework {
     }
     
     createStars() {
-        for (let i = this.numStars; i > 0; i--) {
-            const star = new Star(this.destinationX, this.destinationY, this.ctx, this.blastRadius, this, this.show);
-            this.show.sparks.push(star)
+        for (let i = this.numSparks; i > 0; i--) {
+            const spark = new Star(this.destinationX, this.destinationY, this.ctx, this.blastRadius, this, this.show);
+            this.show.sparks.push(spark)
         }
     }
 }
