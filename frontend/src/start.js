@@ -28,20 +28,32 @@ window.addEventListener('DOMContentLoaded', () => {
         })
         .then((data) => {
             const body = data.data;
+            console.log(body)
 
             let seasons = body.seasons;
-            // console.log(seasons)
             let teamColors = body.teamColors;
-            // console.log(teamColors);
+            // console.log('start.js')
+            // console.log(seasons)
+            // console.log(teamColors)
 
-            let gamesPlayed = [82, 50, 42];
-            // for (let i = 0; i < seasons.length; i++) {
-            //     gamesPlayed.push(parseInt(seasons[i][4]))
-            // }
-            // start bballfireworks show
-            show.animateSeason(gamesPlayed, teamColors)
+            let stats = [];
+            // construct the stats necessary to animate each season
+            for (let i = 0; i < seasons.length; i++) {
+                let season = []
+                let team = seasons[i][1];
+                let gamesPlayed = seasons[i][4];
+                let fieldGoals = seasons[i][7];
+
+                season.push(team)
+                season.push(parseInt(gamesPlayed))
+                season.push(parseInt(fieldGoals))
+                // console.log(season)
+                stats.push(season)
+                // console.log(stats)
             }
-        );
+            // start bballfireworks show
+            show.animateSeason(stats, teamColors)
+        });
     });
 
     addFireworkButton.addEventListener('click', (e) => {

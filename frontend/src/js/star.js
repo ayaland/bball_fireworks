@@ -76,7 +76,6 @@ class Star {
         // this.destinationY -= STAR_ACCELERATION;
         this.transparency -= this.decay;
         if (this.transparency <= this.decay) {
-            // console.log('inside transparency decay')
             this.show.removeSpark(this.x, this.y);
         }
     }

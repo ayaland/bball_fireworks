@@ -5,8 +5,10 @@ import Firework from './firework';
 // can also tie ticksMin to fga
 
 const CANVAS_CLEANUP = 0.3;
+
 // length of a season's fireworks show in seconds
 const SEASON_LENGTH = 4;
+
 // currently there is no easy way to get total # games a non-standard season had
 const TICKS_MAX = 82;
 
@@ -16,10 +18,10 @@ class BballFireworks {
         this.ctx = canvasContextObject.ctx;
         this.fireworks = [];
         this.sparks = []
-        this.seasons = [];
+        this.stats = [];
         this.ticksSinceFirework = 20;
         this.frameId = null;
-        this.colors = {};
+        this.teamColors = {};
 
         this.removeFirework = this.removeFirework.bind(this);
         this.removeSpark = this.removeSpark.bind(this);
@@ -33,8 +35,8 @@ class BballFireworks {
         this.i = 0;
     }
     
-    launchFirework(gamesPlayedInSeason, color) {
-        let ticksMin = 100 - gamesPlayedInSeason;
+    launchFirework(gamesPlayed, color) {
+        let ticksMin = 100 - gamesPlayed;
         if (this.ticksSinceFirework >= utils.randomIntFromRange(ticksMin, TICKS_MAX)) {
             this.fireworks.push(new Firework(this.canvas, this.ctx, this, color));
             this.ticksSinceFirework = 0;
@@ -54,18 +56,18 @@ class BballFireworks {
             this.sparks
         )
     }
-
-    updateObjects() {
-        this.allObjects().forEach((object) => {
-            object.update();
-        })
-    }
-
+    
     draw() {
         this.allObjects().forEach((object) => {
             object.draw()
             }
         )
+    }
+
+    updateObjects() {
+        this.allObjects().forEach((object) => {
+            object.update();
+        })
     }
 
     clearCanvas() {
@@ -86,39 +88,45 @@ class BballFireworks {
         this.sparks.splice(index, 1) 
     }
 
-    animateSeason(gamesPlayed, teamColors) {
+    animateSeason(stats, teamColors) {
         let that = this;
         let start = Date.now();
+        console.log('bball_fireworks.js')
+        console.log(stats)
+        console.log(teamColors)
         
-        that.seasons = gamesPlayed;
-        that.colors = teamColors;
+        that.stats = stats;
+        that.teamColors = teamColors;
 
         function loop() {
-            if (
-                // Date.now() - start < (that.seasons[that.i] * 100) 
-                Date.now() - start < (SEASON_LENGTH * 1000)) {
-                    that.isRunning = true;
-                    that.frameId = requestAnimationFrame(loop);
-                    that.clearCanvas();
-                    that.draw();
-                    that.updateObjects();
-                    that.launchFirework(that.seasons[that.i], color);
-                } 
+            if (Date.now() - start < (SEASON_LENGTH * 1000)) {
+                let gamesPlayed = that.seasons[that.i][1]
+                let team = that.seasons[that.i][0]
+                console.log(team)
+                let color = that.teamColors.team[utils.randomIntFromRange(that.teamColors.team.length - 1)]
+
+                that.isRunning = true;
+                that.frameId = requestAnimationFrame(loop);
+                that.clearCanvas();
+                that.draw();
+                that.updateObjects();
+                that.launchFirework(gamesPlayed, color);
+            } 
 
             else if (that.seasons[that.i + 1]) {
-                    that.i++;
-                    that.isRunning = false;
-                    cancelAnimationFrame(that.frameId);
-                    // call next anim loop
-                    that.nextLoop();
-                } 
+                that.i++;
+                that.isRunning = false;
+                cancelAnimationFrame(that.frameId);
+                // call next anim loop
+                that.nextLoop();
+            } 
 
             else {
-                    if (that.fireworks.length == 0) {
-                        // console.log('no fireworks')
-                    }
-                    cancelAnimationFrame(that.frameId);
-                };
+                if (that.fireworks.length == 0) {
+                    // console.log('no fireworks')
+                }
+                cancelAnimationFrame(that.frameId);
+            };
         };
         loop();
     };

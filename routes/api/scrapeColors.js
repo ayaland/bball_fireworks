@@ -97,7 +97,8 @@ const scrapeColors = async (colorsURL, page, league, teams) => {
 
             for (let arr of pageData) {
                 let hex = reghex.exec(arr)[0];
-                teamColors[teamName].push(hex);
+                teamColors[team].push(hex);
+                console.log(teamColors)
             }
 
         return(teamColors);

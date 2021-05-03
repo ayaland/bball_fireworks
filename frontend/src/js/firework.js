@@ -80,8 +80,8 @@ class Firework {
         this.ctx.moveTo(trailEndX, trailEndY)
         this.ctx.lineTo(this.x, this.y)
         // this.ctx.lineTo(this.destinationX, this.destinationY);
-        // this.ctx.strokeStyle = '#FFFFFF';
-        this.ctx.strokeStyle = `hsl(${this.hue}, 100%, ${this.brightness}%)`;
+        this.ctx.strokeStyle = this.color;
+        // this.ctx.strokeStyle = `hsl(${this.hue}, 100%, ${this.brightness}%)`;
         this.ctx.stroke();
         
         // if (FIREWORK_TARGET) {
