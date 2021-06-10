@@ -2,7 +2,7 @@ const utils = require('./utils');
 import Firework from './firework';
 
 // --- FUTURE NOTES ---
-// can also tie ticksMin to fga
+// can also tie ticksMin to FGA
 
 const CANVAS_CLEANUP = 0.3;
 
@@ -91,19 +91,17 @@ class BballFireworks {
     animateSeason(stats, teamColors) {
         let that = this;
         let start = Date.now();
-        console.log('bball_fireworks.js')
-        console.log(stats)
-        console.log(teamColors)
         
         that.stats = stats;
+        console.log(stats)
         that.teamColors = teamColors;
 
         function loop() {
             if (Date.now() - start < (SEASON_LENGTH * 1000)) {
-                let gamesPlayed = that.seasons[that.i][1]
-                let team = that.seasons[that.i][0]
-                console.log(team)
-                let color = that.teamColors.team[utils.randomIntFromRange(that.teamColors.team.length - 1)]
+                let gamesPlayed = that.stats[that.i][1]
+                // console.log(gamesPlayed)
+                let team = that.stats[that.i][0]
+                let color = that.teamColors[team][utils.randomIntFromRange(0, that.teamColors[team].length)]
 
                 that.isRunning = true;
                 that.frameId = requestAnimationFrame(loop);
@@ -113,7 +111,7 @@ class BballFireworks {
                 that.launchFirework(gamesPlayed, color);
             } 
 
-            else if (that.seasons[that.i + 1]) {
+            else if (that.stats[that.i + 1]) {
                 that.i++;
                 that.isRunning = false;
                 cancelAnimationFrame(that.frameId);
@@ -134,7 +132,7 @@ class BballFireworks {
     nextLoop() {
         let that = this;
         if (that.isRunning == false) {
-            that.animateSeason(that.seasons)
+            that.animateSeason(that.stats, that.teamColors)
         };
     };
 };

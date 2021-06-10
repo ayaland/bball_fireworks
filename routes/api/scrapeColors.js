@@ -27,10 +27,10 @@ const NBA = {
     'SAC': 'Sacramento Kings',
     'SAS': 'San Antonio Spurs',
     'SEA': 'Seattle Supersonics',
-    'TOT': 'Toronto Raptors',
+    'TOR': 'Toronto Raptors',
     'UTA': 'Utah Jazz',
     'WAS': 'Washington Wizards',
-    'defunct teams': 'Charlotte Bobcats, New Orleans Jazz, San Diego Clippers'
+    'defunct teams': 'Charlotte Bobcats, New Orleans Hornets, New Orleans Jazz, San Diego Clippers'
 }
 
 const WNBA = {
@@ -51,35 +51,45 @@ const WNBA = {
 
 const reghex = new RegExp(/#[0-9A-F]{6}/i)
 
+const getKeyByValue = (object, value) => {
+    return Object.keys(object).find(key => object[key] === value)
+};
+
 const scrapeColors = async (colorsURL, page, league, teams) => {
 
-    
     try {
     // create Object of full team names as key and values to be colors scraped
         let teamColors = new Object();
         for (let team of teams) {
-            if (league == 'NBA') {
+            if (league == 'NBA' && NBA[team]) {
+                // console.log(team)
                 let teamName = NBA[team];
+                // console.log(teamName)
                 teamColors[teamName] = [];
-            } else if (league == 'WNBA') {
+            } else if (league == 'WNBA' && WNBA[team]) {
                 let teamName = WNBA[team];
                 teamColors[teamName] = [];
+            } else {
+                continue;
             }
+            // console.log(teamColors)
         };
         
         // loop over team names (keys) in the Object
         // put them in input field
         // scrape hex codes for colors
         for (let [teamName, hexCodes] of Object.entries(teamColors)) {
-            await page.goto(colorsURL);
+            // console.log(teamName)
+            await page.goto(colorsURL, { waitUntil: 'networkidle2' });
+            // await page.content();
+            // console.log('after page content')
+            await page.waitForSelector('input.search-form-input');
             await page.evaluate(
                 (teamName) => {
                     window.teamName = teamName
                 },
                 teamName
             );
-
-            await page.waitForSelector('.search-form-input');
             await page.$eval('input[class="search-form-input"]',
                 (search) => (search.value = window.teamName));
             // page.click does not work after Puppeteer 1.6
@@ -87,22 +97,37 @@ const scrapeColors = async (colorsURL, page, league, teams) => {
             await page.evaluate(() => document.querySelector('input.search-form-submit').click())
 
             await page.waitForSelector('div.colorblock');
+            // if ((await page.$('div.colorblock')) == null) {
+            //     console.log('team does not exist')
+            //     continue;
+            // } else {
+                const pageData = await page.$$eval('div.colorblock', texts => {
+                    return Array.from(texts, text => {
+                        const colorData = text.innerText;
+                        return colorData;
+                    })
+                });
+                for (let arr of pageData) {
+                    let hex = reghex.exec(arr)[0];
+                    teamColors[teamName].push(hex);
+                    console.log('teamColors')
+                    console.log(teamColors)
+            //     }
+             };
 
-            const pageData = await page.$$eval('div.colorblock', texts => {
-                return Array.from(texts, text => {
-                    const colorData = text.innerText;
-                    return colorData;
-                })
-            });
-
-            for (let arr of pageData) {
-                let hex = reghex.exec(arr)[0];
-                teamColors[team].push(hex);
+        for (let[teamName, hexCodes] of Object.entries(teamColors)) {
+            console.log(teamName)
+            if (league == 'NBA') {
+                let acro = getKeyByValue(NBA, teamName)
+                teamColors[acro] = hexCodes;
                 console.log(teamColors)
+            } else if (league == 'WNBA') {
+                let acro = getKeyByValue(WNBA, teamName)
+                teamColors[acro] = hexCodes;
             }
-
-        return(teamColors);
         }
+    }
+    return(teamColors);
     }
     
     catch(error) {
@@ -113,7 +138,44 @@ const scrapeColors = async (colorsURL, page, league, teams) => {
 
 module.exports = scrapeColors;
 
+    // await page.waitForSelector('.et_pb_s');
+    // await page.$eval('input[class="et_pb_s"]',
+    //     (search) => (search.value = window.teamName)
+    // );
+    // await page.evaluate(
+    //     () => document.querySelector('input.et_pb_searchsubmit').click()
+    // );
+    // // await page.evaluate(
+    //     // () => document.querySelector('a.inner-text == window.teamName Team Colors').click()
+    // // );
+    // await page.waitForSelector('.entry-title')
+    // await page.evaluate(
+    //     () => document.querySelector('h2.entry-title').click()
+    // );
+    // const [link] = await page.$x("//a[contains(., ' Team Colors')]");
+    // if (link) {
+    //     await link.click();
+    // }
 
+    // await page.waitForSelector('div.et_pb_text_inner');
+    // const pageData = await page.$$eval('span', texts => {
+    //     console.log('inside pageData const')
+    //     // elements.map(el => el.innerText)
+    //     return Array.from(texts, text => {
+    //         const colorData = text.innerText;
+    //         return colorData
+    //     })
+    // }
+    // );
+
+    // const pageData = await page.$$eval('span', texts => {
+    //     return Array.from(texts, text => {
+    //         const colorData = text.innerText;
+    //         console.log('colorData')
+    //         console.log(colorData)
+    //         return colorData
+    //     })
+    // });
 
 
 

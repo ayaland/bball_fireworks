@@ -15,7 +15,7 @@ const NUM_SPARKS = 20;
 const PADDING_X = 80;
 const PADDING_Y = 80;
 
-const HUE_STEP_INCREASE = 1.5;
+const HUE_STEP_INCREASE = 0.1;
 
 // Dedicated to Mrs. Voula Steinberg - thank you for the Trigonometry education
 class Firework {
@@ -50,7 +50,7 @@ class Firework {
         
         this.brightness = utils.random(FIREWORK_BRIGHTNESS_MIN, FIREWORK_BRIGHTNESS_MAX);
         // Ayanote: tie this to random selection from team colors of the season
-        this.hue = 120;
+        // this.hue = 120;
         
         this.createStars = this.createStars.bind(this);
         this.update = this.update.bind(this);
@@ -61,7 +61,7 @@ class Firework {
         this.trail.pop();
         this.trail.unshift([this.x, this.y]);
         this.speed *= this.acceleration;
-        this.hue += HUE_STEP_INCREASE;
+        this.color += HUE_STEP_INCREASE;
         
         if (this.y <= this.destinationY) {
             this.createStars();

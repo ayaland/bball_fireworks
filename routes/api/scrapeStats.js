@@ -14,11 +14,13 @@ const scrapeStats = async (pageURL, page, pName) => {
             (search) => (search.value = window.pName));
         await page.click('input[type="submit"]');
 
+        // clicks first link in results if there are any
+        if ((await page.$('#players > div.search-item > div.search-item-name > a')) !== null) {
+            console.log('found link')
+            await page.evaluate(() => document.querySelector('#players > div.search-item > div.search-item-name > a').click())
+        }
+        
         // some players do not have links page, goes directly to stats
-        // await page.waitForNavigation({ waitUntil: 'networkidle0' });
-
-        // clicks first link in results
-        await page.click('#players > div.search-item > div.search-item-name > a')
         
         // scrapes per season data in main table
         await page.waitForSelector('#per_game > tbody > tr')

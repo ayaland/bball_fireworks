@@ -30,8 +30,8 @@ const scrapeEverything = async (pageURL, colorsURL, pName) => {
             //                    Team2: [team2's, hex, color, codes]
             //                   }    
         const teamColors = await scrapeColors(colorsURL, pageTwo, league, teams);
-        console.log('scrapeEverything')
-        console.log(teamColors)
+        // console.log('scrapeEverything')
+        // console.log(teamColors)
         return { seasons, teamColors }
     }
 
@@ -40,6 +40,7 @@ const scrapeEverything = async (pageURL, colorsURL, pName) => {
     }
 
     finally {
+        // console.log('would close now')
         browser.close()
     }
 };

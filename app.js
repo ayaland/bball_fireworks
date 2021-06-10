@@ -11,6 +11,7 @@ const scrapeEverything = require('./routes/api/scrapeEverything');
 
 const pageURL = 'http://www.basketball-reference.com';
 const colorsURL = 'https://teamcolorcodes.com/';
+// const colorsURL = 'https://sportsfancovers.com/';
 
 // mongoose.connect returns a promise
 // mongoose

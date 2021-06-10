@@ -27,12 +27,12 @@ window.addEventListener('DOMContentLoaded', () => {
             } 
         })
         .then((data) => {
+            // console.log('start.js')
             const body = data.data;
-            console.log(body)
+            // console.log(body)
 
             let seasons = body.seasons;
             let teamColors = body.teamColors;
-            // console.log('start.js')
             // console.log(seasons)
             // console.log(teamColors)
 
@@ -63,7 +63,7 @@ window.addEventListener('DOMContentLoaded', () => {
             // show.updateObjects();
             // show.launchFirework();
 
-            show.animateSeason(seasons)
+            show.animateSeason(stats, teamColors)
     });
 })
 
