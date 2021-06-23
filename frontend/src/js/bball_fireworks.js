@@ -19,7 +19,7 @@ class BballFireworks {
         this.fireworks = [];
         this.sparks = []
         this.stats = [];
-        this.ticksSinceFirework = 20;
+        this.ticksSinceFirework = 0;
         this.frameId = null;
         this.teamColors = {};
 
@@ -91,16 +91,22 @@ class BballFireworks {
     animateSeason(stats, teamColors) {
         let that = this;
         let start = Date.now();
+        // console.log(that.i)
         
         that.stats = stats;
-        console.log(stats)
+        // console.log(that.stats)
+
         that.teamColors = teamColors;
+        // console.log(that.teamColors)
 
         function loop() {
             if (Date.now() - start < (SEASON_LENGTH * 1000)) {
-                let gamesPlayed = that.stats[that.i][1]
-                // console.log(gamesPlayed)
+                let statsObj = that.stats[that.i] || []
+                let gamesPlayed = statsObj[1]
+                // let gamesPlayed = that.stats[that.i][1]
+                console.log(gamesPlayed)
                 let team = that.stats[that.i][0]
+                console.log(team)
                 let color = that.teamColors[team][utils.randomIntFromRange(0, that.teamColors[team].length)]
 
                 that.isRunning = true;

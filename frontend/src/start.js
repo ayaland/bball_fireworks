@@ -18,7 +18,8 @@ window.addEventListener('DOMContentLoaded', () => {
     const show = new BballFireworks(getCanvas());
     const addFireworkButton = document.getElementById('addFirework');
     let addNameField = document.getElementById('submitButton');
-    
+    // document.getElementById("pName").innerHTML = pName;
+
     addNameField.addEventListener('click', (e) => {
         let pName = utils.saveName();
         axios.get('/career', {
@@ -29,26 +30,48 @@ window.addEventListener('DOMContentLoaded', () => {
         .then((data) => {
             // console.log('start.js')
             const body = data.data;
-            // console.log(body)
-
+            console.log(body)
             let seasons = body.seasons;
+            console.log(seasons)
             let teamColors = body.teamColors;
-            // console.log(seasons)
+            console.log(teamColors)
+            
+            document.getElementById("displayName").innerHTML = pName;
             // console.log(teamColors)
-
+            
             let stats = [];
             // construct the stats necessary to animate each season
             for (let i = 0; i < seasons.length; i++) {
+                document.getElementById("season").innerHTML = seasons[i][0];
                 let season = []
-                let team = seasons[i][1];
-                let gamesPlayed = seasons[i][4];
-                let fieldGoals = seasons[i][7];
+                // console.log(Object.keys(teamColors))
+                let teamAcronym = seasons[i][2]
+                // console.log(teamAcronym)
+                console.log(teamColors)
+                if (teamColors[teamAcronym]) {
+                    console.log('true')
+                    // in the future, also scrape table head and get the indices by the stat abbrev., ie. AST
+                    // this will be better than changing these int all the time
 
-                season.push(team)
-                season.push(parseInt(gamesPlayed))
-                season.push(parseInt(fieldGoals))
+                    let team = seasons[i][2];
+                    // console.log(team)
+                    let gamesPlayed = seasons[i][5];
+                    // console.log(gamesPlayed)
+                    let fieldGoals = seasons[i][8];
+                    // console.log(fieldGoals)
+
+                    season.push(team)
+                    season.push(parseInt(gamesPlayed))
+                    season.push(parseInt(fieldGoals))
+                    console.log(season)
+                    stats.push(season)
+                    console.log(stats)
+
+                } else {
+                    continue;
+                }
+
                 // console.log(season)
-                stats.push(season)
                 // console.log(stats)
             }
             // start bballfireworks show

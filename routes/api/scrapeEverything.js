@@ -14,13 +14,15 @@ const scrapeEverything = async (pageURL, colorsURL, pName) => {
 
         // 1) scrape basketball-reference
         const rowsandTeams = await scrapeStats(pageURL, page, pName);
+        console.log(rowsandTeams)
         // seasons format is [
-        //                    [age, team, league, etc.], 
-        //                    [age, team, league, etc.]
+        //                    [season, age, team, league, etc.], 
+        //                    [season, age, team, league, etc.]
         //                   ]
         const seasons = rowsandTeams[0]; // array of (W)NBA season stats
         const teams = rowsandTeams[1]; // set of all team acronyms
-        const league = seasons[0][2];
+        const league = seasons[0][3];
+        console.log(league)
         
         const pageTwo = await browser.newPage();
         

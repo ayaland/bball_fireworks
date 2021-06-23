@@ -2,20 +2,20 @@ const utils = require('./utils');
 import Star from './star';
 
 const FIREWORK_ACCELERATION = 0.97;
-const FIREWORK_BRIGHTNESS_MIN = 50;
-const FIREWORK_BRIGHTNESS_MAX = 70;
 const FIREWORK_SPEED = 10;
 const FIREWORK_TRAIL_LENGTH = 1;
 
-const FIREWORK_DECAY_MIN = 0.015;
-const FIREWORK_DECAY_MAX = 0.03;
-const FIREWORK_CLEANUP = 0.3;
 const NUM_SPARKS = 20;
 
 const PADDING_X = 80;
 const PADDING_Y = 80;
 
-const HUE_STEP_INCREASE = 0.1;
+const HUE_STEP_INCREASE = 0.01;
+// const FIREWORK_DECAY_MIN = 0.015;
+// const FIREWORK_DECAY_MAX = 0.03;
+// const FIREWORK_CLEANUP = 0.3;
+// const FIREWORK_BRIGHTNESS_MIN = 50;
+// const FIREWORK_BRIGHTNESS_MAX = 70;
 
 // Dedicated to Mrs. Voula Steinberg - thank you for the Trigonometry education
 class Firework {
@@ -48,7 +48,7 @@ class Firework {
         this.acceleration = FIREWORK_ACCELERATION;
         this.speed = FIREWORK_SPEED;
         
-        this.brightness = utils.random(FIREWORK_BRIGHTNESS_MIN, FIREWORK_BRIGHTNESS_MAX);
+        // this.brightness = utils.random(FIREWORK_BRIGHTNESS_MIN, FIREWORK_BRIGHTNESS_MAX);
         // Ayanote: tie this to random selection from team colors of the season
         // this.hue = 120;
         

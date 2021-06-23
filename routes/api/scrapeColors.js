@@ -58,13 +58,18 @@ const getKeyByValue = (object, value) => {
 const scrapeColors = async (colorsURL, page, league, teams) => {
 
     try {
+        console.log(colorsURL)
+        console.log(page)
+        console.log(league)
+        console.log(teams)
+        console.log('scrapeColors')
     // create Object of full team names as key and values to be colors scraped
         let teamColors = new Object();
         for (let team of teams) {
             if (league == 'NBA' && NBA[team]) {
                 // console.log(team)
                 let teamName = NBA[team];
-                // console.log(teamName)
+                console.log(teamName)
                 teamColors[teamName] = [];
             } else if (league == 'WNBA' && WNBA[team]) {
                 let teamName = WNBA[team];
@@ -79,11 +84,12 @@ const scrapeColors = async (colorsURL, page, league, teams) => {
         // put them in input field
         // scrape hex codes for colors
         for (let [teamName, hexCodes] of Object.entries(teamColors)) {
-            // console.log(teamName)
+            console.log(teamName)
             await page.goto(colorsURL, { waitUntil: 'networkidle2' });
             // await page.content();
             // console.log('after page content')
             await page.waitForSelector('input.search-form-input');
+            console.log('in the scraping colors page')
             await page.evaluate(
                 (teamName) => {
                     window.teamName = teamName
@@ -104,29 +110,32 @@ const scrapeColors = async (colorsURL, page, league, teams) => {
                 const pageData = await page.$$eval('div.colorblock', texts => {
                     return Array.from(texts, text => {
                         const colorData = text.innerText;
+                        console.log('colorData')
+                        console.log(colorData)
                         return colorData;
                     })
                 });
                 for (let arr of pageData) {
                     let hex = reghex.exec(arr)[0];
                     teamColors[teamName].push(hex);
-                    console.log('teamColors')
-                    console.log(teamColors)
+                    // console.log('teamColors')
+                    // console.log(teamColors)
             //     }
              };
 
         for (let[teamName, hexCodes] of Object.entries(teamColors)) {
-            console.log(teamName)
             if (league == 'NBA') {
+                console.log(teamName)
                 let acro = getKeyByValue(NBA, teamName)
                 teamColors[acro] = hexCodes;
-                console.log(teamColors)
+                // console.log(teamColors)
             } else if (league == 'WNBA') {
                 let acro = getKeyByValue(WNBA, teamName)
                 teamColors[acro] = hexCodes;
             }
         }
     }
+    console.log(teamColors)
     return(teamColors);
     }
     

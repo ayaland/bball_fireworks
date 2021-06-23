@@ -1,6 +1,7 @@
 const scrapeStats = async (pageURL, page, pName) => {
 
         await page.goto(pageURL);
+        // console.log('scrapeStats')
 
         // types player name in input field and submits
         await page.waitForSelector('input');
@@ -27,15 +28,17 @@ const scrapeStats = async (pageURL, page, pName) => {
 
         const rows = await page.$$eval('#per_game > tbody > tr.full_table', rows => {
             return Array.from(rows, row => {
-                const columns = row.querySelectorAll('td');
+                const columns = row.querySelectorAll('th, td');
                 return Array.from(columns, column => column.innerText);
             })
         });
 
+        // create a new object of all teams player played for
+        // this will be used in the team colors object
         const teams = new Set();
         for (let row of rows) {
-            // here we take the 2nd entry of each array
-            teams.add(row[1]);
+            // here we take the 3rd entry of each array
+            teams.add(row[2]);
         }
         // console.log(rows)
         return [
