@@ -102,11 +102,12 @@ class BballFireworks {
         function loop() {
             if (Date.now() - start < (SEASON_LENGTH * 1000)) {
                 let statsObj = that.stats[that.i] || []
-                let gamesPlayed = statsObj[1]
+                let gamesPlayed = statsObj[2]
                 // let gamesPlayed = that.stats[that.i][1]
-                console.log(gamesPlayed)
-                let team = that.stats[that.i][0]
-                console.log(team)
+                let team = that.stats[that.i][1]
+                // console.log(gamesPlayed)
+                // console.log(team)
+                document.getElementById("year").innerHTML = that.stats[that.i][0];
                 let color = that.teamColors[team][utils.randomIntFromRange(0, that.teamColors[team].length)]
 
                 that.isRunning = true;
@@ -120,16 +121,22 @@ class BballFireworks {
             else if (that.stats[that.i + 1]) {
                 that.i++;
                 that.isRunning = false;
-                cancelAnimationFrame(that.frameId);
                 // call next anim loop
                 that.nextLoop();
             } 
 
             else {
+                console.log(that.i)
                 if (that.fireworks.length == 0) {
-                    // console.log('no fireworks')
+                    console.log('no fireworks')
+                    cancelAnimationFrame(that.frameId);
                 }
-                cancelAnimationFrame(that.frameId);
+                console.log('fireworks still in queue')
+                that.isRunning = false;
+                document.getElementById("year").innerHTML = '';
+                document.getElementById("displayName").innerHTML = '';
+                // that.nextLoop();
+                // continue;
             };
         };
         loop();

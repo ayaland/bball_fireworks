@@ -2,7 +2,9 @@ const utils = require('./utils');
 import Star from './star';
 
 const FIREWORK_ACCELERATION = 0.97;
+// tie speed to position?
 const FIREWORK_SPEED = 10;
+// tie trail length to % of shots 3 pt?
 const FIREWORK_TRAIL_LENGTH = 1;
 
 const NUM_SPARKS = 20;
@@ -17,7 +19,7 @@ const HUE_STEP_INCREASE = 0.01;
 // const FIREWORK_BRIGHTNESS_MIN = 50;
 // const FIREWORK_BRIGHTNESS_MAX = 70;
 
-// Dedicated to Mrs. Voula Steinberg - thank you for the Trigonometry education
+// To Mrs. Voula Steinberg - thank you for the Trigonometry education
 class Firework {
     constructor(canvas, ctx, show, color) {
         this.canvas = canvas;
