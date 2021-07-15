@@ -23,9 +23,9 @@ const scrapeStats = async (pageURL, page, pName) => {
         }
         
         // scrapes per season data in main table
-        // await page.waitForSelector('#per_game > tbody > tr')
-        await page.waitForSelector(regseas)
-        console.log(regseas)
+        await page.waitForSelector('#per_game > tbody > tr')
+        // await page.waitForSelector(regseas)
+        // console.log(regseas)
 
         const rows = await page.$$eval('#per_game > tbody > tr.full_table', rows => {
             return Array.from(rows, row => {
