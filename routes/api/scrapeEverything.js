@@ -14,7 +14,7 @@ const scrapeEverything = async (pageURL, colorsURL, pName) => {
 
         // 1) scrape basketball-reference
         const rowsandTeams = await scrapeStats(pageURL, page, pName);
-        console.log(rowsandTeams)
+
         // seasons format is [
         //                    [season, age, team, league, etc.], 
         //                    [season, age, team, league, etc.]
@@ -22,7 +22,6 @@ const scrapeEverything = async (pageURL, colorsURL, pName) => {
         const seasons = rowsandTeams[0]; // array of (W)NBA season stats
         const teams = rowsandTeams[1]; // set of all team acronyms
         const league = seasons[0][3];
-        console.log(league)
         
         const pageTwo = await browser.newPage();
         
@@ -32,8 +31,6 @@ const scrapeEverything = async (pageURL, colorsURL, pName) => {
             //                    Team2: [team2's, hex, color, codes]
             //                   }    
         const teamColors = await scrapeColors(colorsURL, pageTwo, league, teams);
-        // console.log('scrapeEverything')
-        // console.log(teamColors)
         return { seasons, teamColors }
     }
 

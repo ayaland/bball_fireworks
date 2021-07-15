@@ -28,7 +28,6 @@ function cleanCanvas() {
 }
 
 const saveName = function saveName() {
-    // console.log('inside utils > saveName')
     let savedName = document.getElementById('pName').value;
     return savedName;
 }

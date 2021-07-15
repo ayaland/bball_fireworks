@@ -17,24 +17,27 @@ export const getCanvas = () => {
 window.addEventListener('DOMContentLoaded', () => {
     const show = new BballFireworks(getCanvas());
     const addFireworkButton = document.getElementById('addFirework');
-    let addNameField = document.getElementById('submitButton');
-    // document.getElementById("pName").innerHTML = pName;
+    let addName = document.getElementById('form');
+    let addNameButton = document.getElementById('submitButton');
 
-    addNameField.addEventListener('click', (e) => {
+    // addNameButton.addEventListener('click', (e) => {
+
+    
+    addName.addEventListener('submit', (e) => {
+        e.preventDefault();
         let pName = utils.saveName();
+        console.log('inside addEventListener')
+        console.log(pName)
         axios.get('/career', {
             params: { 
                 name: pName 
             } 
         })
         .then((data) => {
-            // console.log('start.js')
             const body = data.data;
             console.log(body)
             let seasons = body.seasons;
-            // console.log(seasons)
             let teamColors = body.teamColors;
-            // console.log(teamColors)
             
             // construct the stats necessary to animate each season
             let stats = [];
@@ -42,12 +45,8 @@ window.addEventListener('DOMContentLoaded', () => {
             for (let i = 0; i < seasons.length; i++) {
                 // document.getElementById("season").innerHTML = seasons[i][0];
                 let season = []
-                // console.log(Object.keys(teamColors))
                 let teamAcronym = seasons[i][2]
-                // console.log(teamAcronym)
-                console.log(teamColors)
                 if (teamColors[teamAcronym]) {
-                    console.log('true')
                     // in the future, also scrape table head and get the indices by the stat abbrev., ie. AST
                     // this will be better than changing these int all the time
                     let year = seasons[i][0];
@@ -59,9 +58,9 @@ window.addEventListener('DOMContentLoaded', () => {
                     season.push(team)
                     season.push(parseInt(gamesPlayed))
                     season.push(parseInt(fieldGoals))
-                    console.log(season)
+                    // console.log(season)
                     stats.push(season)
-                    console.log(stats)
+                    // console.log(stats)
                     
                 } else {
                     continue;
@@ -85,8 +84,6 @@ window.addEventListener('DOMContentLoaded', () => {
             show.animateSeason(stats, teamColors)
     });
 })
-
-// will need .then or async syntax to wait for data to return
 
 window.requestAnimFrame = (() => {
     return window.requestAnimationFrame ||

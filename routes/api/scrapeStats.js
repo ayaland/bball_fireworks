@@ -1,7 +1,8 @@
+const regseas = new RegExp(/^#per_game$/i);
+
 const scrapeStats = async (pageURL, page, pName) => {
 
         await page.goto(pageURL);
-        // console.log('scrapeStats')
 
         // types player name in input field and submits
         await page.waitForSelector('input');
@@ -16,15 +17,15 @@ const scrapeStats = async (pageURL, page, pName) => {
         await page.click('input[type="submit"]');
 
         // clicks first link in results if there are any
+        // some players do not have links page, goes directly to stats
         if ((await page.$('#players > div.search-item > div.search-item-name > a')) !== null) {
-            console.log('found link')
             await page.evaluate(() => document.querySelector('#players > div.search-item > div.search-item-name > a').click())
         }
         
-        // some players do not have links page, goes directly to stats
-        
         // scrapes per season data in main table
-        await page.waitForSelector('#per_game > tbody > tr')
+        // await page.waitForSelector('#per_game > tbody > tr')
+        await page.waitForSelector(regseas)
+        console.log(regseas)
 
         const rows = await page.$$eval('#per_game > tbody > tr.full_table', rows => {
             return Array.from(rows, row => {

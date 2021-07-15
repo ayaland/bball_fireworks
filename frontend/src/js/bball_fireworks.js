@@ -91,13 +91,9 @@ class BballFireworks {
     animateSeason(stats, teamColors) {
         let that = this;
         let start = Date.now();
-        // console.log(that.i)
         
         that.stats = stats;
-        // console.log(that.stats)
-
         that.teamColors = teamColors;
-        // console.log(that.teamColors)
 
         function loop() {
             if (Date.now() - start < (SEASON_LENGTH * 1000)) {
@@ -126,7 +122,6 @@ class BballFireworks {
             } 
 
             else {
-                console.log(that.i)
                 if (that.fireworks.length == 0) {
                     console.log('no fireworks')
                     cancelAnimationFrame(that.frameId);
