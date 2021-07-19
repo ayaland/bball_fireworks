@@ -31,6 +31,7 @@ app.get('/career', async (req, res) => {
         // console.log(data)
 
     } catch(error) {
+        console.log(error)
         res.status(500).json(error)
     }
 });
