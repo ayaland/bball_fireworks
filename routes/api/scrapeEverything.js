@@ -4,8 +4,9 @@ const scrapeColors = require('./scrapeColors');
 
 const scrapeEverything = async (pageURL, colorsURL, pName) => {
     const browser = await puppeteer.launch({
-    headless: false,
-    slowMo: 50
+        args: ['--no-sandbox'],
+        headless: true,
+        slowMo: 50
     });
 
     try {
