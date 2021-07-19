@@ -128,6 +128,7 @@ class BballFireworks {
                 }
                 console.log('fireworks still in queue')
                 that.isRunning = false;
+                cancelAnimationFrame(that.frameId);
                 document.getElementById("year").innerHTML = '';
                 document.getElementById("displayName").innerHTML = '';
                 // that.nextLoop();
