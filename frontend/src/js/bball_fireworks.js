@@ -7,7 +7,7 @@ import Firework from './firework';
 const CANVAS_CLEANUP = 0.3;
 
 // length of a season's fireworks show in seconds
-const SEASON_LENGTH = 4;
+const SEASON_LENGTH = 5;
 
 // currently there is no easy way to get total # games a non-standard season had
 const TICKS_MAX = 82;
@@ -101,9 +101,8 @@ class BballFireworks {
                 let gamesPlayed = statsObj[2]
                 // let gamesPlayed = that.stats[that.i][1]
                 let team = that.stats[that.i][1]
-                // console.log(gamesPlayed)
-                // console.log(team)
-                document.getElementById("year").innerHTML = that.stats[that.i][0];
+                document.getElementById('appMessages').innerHTML = '';
+                document.getElementById('displaySeason').innerHTML = that.stats[that.i][0];
                 let color = that.teamColors[team][utils.randomIntFromRange(0, that.teamColors[team].length)]
 
                 that.isRunning = true;
@@ -129,8 +128,8 @@ class BballFireworks {
                 console.log('fireworks still in queue')
                 that.isRunning = false;
                 cancelAnimationFrame(that.frameId);
-                document.getElementById("year").innerHTML = '';
-                document.getElementById("displayName").innerHTML = '';
+                document.getElementById("displayName").innerHTML = 'Bball Fireworks';
+                document.getElementById("displaySeason").innerHTML = '';
                 // that.nextLoop();
                 // continue;
             };

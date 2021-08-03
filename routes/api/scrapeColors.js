@@ -56,6 +56,7 @@ const getKeyByValue = (object, value) => {
 };
 
 const scrapeColors = async (colorsURL, page, league, teams) => {
+    // document.getElementById("appMessages").innerHTML = 'Getting team color codes...';
 
     // create Object of full team names as key and values to be colors scraped
     try {
@@ -79,7 +80,6 @@ const scrapeColors = async (colorsURL, page, league, teams) => {
         // scrape hex codes for colors
         for (let [teamName, hexCodes] of Object.entries(teamColors)) {
             await page.goto(colorsURL, { waitUntil: 'networkidle2' });
-            // await page.content();
             await page.waitForSelector('input.search-form-input');
             await page.evaluate(
                 (teamName) => {

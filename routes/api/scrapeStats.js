@@ -1,7 +1,6 @@
 const regseas = new RegExp(/^#per_game$/i);
 
 const scrapeStats = async (pageURL, page, pName) => {
-
         await page.goto(pageURL);
 
         // types player name in input field and submits

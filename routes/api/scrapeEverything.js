@@ -3,6 +3,7 @@ const scrapeStats = require('./scrapeStats');
 const scrapeColors = require('./scrapeColors');
 
 const scrapeEverything = async (pageURL, colorsURL, pName) => {
+    // document.getElementById("appMessages").innerHTML = 'Opening headless browser...';
     const browser = await puppeteer.launch({
         args: ['--no-sandbox'],
         headless: true,
@@ -12,6 +13,7 @@ const scrapeEverything = async (pageURL, colorsURL, pName) => {
     try {
         // any promise that needs to be resolved uses 'await'
         const page = await browser.newPage();
+
 
         // 1) scrape basketball-reference
         const rowsandTeams = await scrapeStats(pageURL, page, pName);
@@ -40,7 +42,6 @@ const scrapeEverything = async (pageURL, colorsURL, pName) => {
     }
 
     finally {
-        // console.log('would close now')
         browser.close()
     }
 };

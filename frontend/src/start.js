@@ -1,3 +1,4 @@
+import { modelNames } from 'mongoose';
 import BballFireworks from './js/bball_fireworks';
 const axios = require('axios')
 const utils = require('./js/utils')
@@ -14,20 +15,43 @@ export const getCanvas = () => {
     return { canvas, ctx }
 }
 
+// window.onclick = function (event) {
+//     if (event.target == openModal) {
+//         openModal.style.display = "none";
+//     }
+// }
+
 window.addEventListener('DOMContentLoaded', () => {
     const show = new BballFireworks(getCanvas());
-    const addFireworkButton = document.getElementById('addFirework');
-    let addName = document.getElementById('form');
-    let addNameButton = document.getElementById('submitButton');
+    // const addFireworkButton = document.getElementById('addFirework');
+    
+    let faqModal = document.getElementById("faqModal");
+    
+    let openModal = document.getElementById("openModal");
+    openModal.addEventListener('click', (e) => {
+        // e.preventDefault();
+        faqModal.style.display = "block";
+        openModal.style.display = "none";
+    })
 
-    // addNameButton.addEventListener('click', (e) => {
+    let closeModal = document.getElementById("closeModal");
+    closeModal.addEventListener('click', (e) => {
+        // e.preventDefault();
+        faqModal.style.display = "none";
+        openModal.style.display = "block";
+    })
 
     
-    addName.addEventListener('submit', (e) => {
+
+    let nameForm = document.getElementById('form');
+    nameForm.addEventListener('submit', (e) => {
         e.preventDefault();
+
+        document.getElementById('appMessages').innerHTML = 'Getting career stats and colors, please wait ...';
+
         let pName = utils.saveName();
-        console.log('inside addEventListener')
-        console.log(pName)
+        nameForm.reset();
+
         axios.get('/career', {
             params: { 
                 name: pName 
@@ -35,7 +59,6 @@ window.addEventListener('DOMContentLoaded', () => {
         })
         .then((data) => {
             const body = data.data;
-            console.log(body)
             let seasons = body.seasons;
             let teamColors = body.teamColors;
             
@@ -43,7 +66,6 @@ window.addEventListener('DOMContentLoaded', () => {
             let stats = [];
             
             for (let i = 0; i < seasons.length; i++) {
-                // document.getElementById("season").innerHTML = seasons[i][0];
                 let season = []
                 let teamAcronym = seasons[i][2]
                 if (teamColors[teamAcronym]) {
@@ -58,31 +80,28 @@ window.addEventListener('DOMContentLoaded', () => {
                     season.push(team)
                     season.push(parseInt(gamesPlayed))
                     season.push(parseInt(fieldGoals))
-                    // console.log(season)
                     stats.push(season)
-                    // console.log(stats)
                     
                 } else {
                     continue;
                 }
             }
+
             // start bballfireworks show
-            
             show.animateSeason(stats, teamColors)
             document.getElementById("displayName").innerHTML = pName;
-            // document.getElementById("year").innerHTML = stats[0][0];
         });
     });
 
-    addFireworkButton.addEventListener('click', (e) => {
-        // click by click test
-            // show.clearCanvas();
-            // show.draw();
-            // show.updateObjects();
-            // show.launchFirework();
+    // addFireworkButton.addEventListener('click', (e) => {
+    //     // click by click test
+    //         // show.clearCanvas();
+    //         // show.draw();
+    //         // show.updateObjects();
+    //         // show.launchFirework();
 
-            show.animateSeason(stats, teamColors)
-    });
+    //         show.animateSeason(stats, teamColors)
+    // });
 })
 
 window.requestAnimFrame = (() => {

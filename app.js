@@ -27,11 +27,11 @@ app.use(express.static(path.join(__dirname, "frontend", "src")));
 app.get('/career', async (req, res) => {
     try {
         let data = await scrapeEverything(pageURL, colorsURL, req.query.name);
-        res.json(data)
         // console.log(data)
+        res.json(data)
 
     } catch(error) {
-        console.log(error)
+        // console.log(error)
         res.status(500).json(error)
     }
 });

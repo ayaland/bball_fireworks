@@ -2,27 +2,44 @@
     <link rel="stylesheet" type="text/css" href="./style.css">
 </head>
 <body>
-    <canvas id="canvas">Your browser does not support canvas</canvas>
     <script type="text/javascript" src="./bundle.js"></script>
-    <!-- <script type="text/javascript" src="./js/utils.js"></script> -->
-    <!-- <script type="text/javascript" src="./start.js"></script> -->
+    <h1>
+        <span id="displayName">Bball Fireworks</span>
+        <br />
+        <span id="displaySeason"></span>
+    </h1>
 
-    <button id="addFirework">Test fireworks</button>
+    <div id="openModal">What is this?</div>
+    
+    <div id="faqModal" class="modal">
+
+        <div class="modalContent">
+            <p>
+                This app uses the Puppeteer library to look up the career 
+                statistics of a US professional basketball player on 
+                bball-reference.com, the team colors of all of the teams on 
+                which they have played on teamcolors.com, and renders 
+                the career as a fireworks show on canvasJS.
+            </p>
+        </div>
+        <span class="closeModal" id="closeModal">close</span>
+        
+    </div>
+
+    <canvas id="canvas">Your browser does not support canvas</canvas>
+
+    <!-- <button id="addFirework">Test fireworks</button> -->
 
     <form id="form">
         <label>Player name: 
-            <input type="text" id="pName" value="marvin bagley" />
+            <input type="text" id="pName" value="" />
         </label>
         <input type="submit" id="submitButton" value="Submit" />
     </form>
 
-    <h1>
-        Player: 
-        <span id="displayName"></span>
-        <br />
-        Season:
-        <span id="year"></span>
-    </h1>
+    <span id="appMessages"></span>
+    
+
 
 
     <!-- <script type="text/javascript">
