@@ -15,11 +15,6 @@ export const getCanvas = () => {
     return { canvas, ctx }
 }
 
-// window.onclick = function (event) {
-//     if (event.target == openModal) {
-//         openModal.style.display = "none";
-//     }
-// }
 
 window.addEventListener('DOMContentLoaded', () => {
     const show = new BballFireworks(getCanvas());
@@ -40,8 +35,6 @@ window.addEventListener('DOMContentLoaded', () => {
         faqModal.style.display = "none";
         openModal.style.display = "block";
     })
-
-    
 
     let nameForm = document.getElementById('form');
     nameForm.addEventListener('submit', (e) => {

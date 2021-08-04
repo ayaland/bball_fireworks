@@ -88,6 +88,9 @@ class BballFireworks {
         this.sparks.splice(index, 1) 
     }
 
+// Tony note: delay the longest possible time a firework can be alive
+// put different font! NBA? Sans, Google fonts can be included with a line
+
     animateSeason(stats, teamColors) {
         let that = this;
         let start = Date.now();

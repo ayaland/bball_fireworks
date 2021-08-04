@@ -3,10 +3,9 @@ const scrapeStats = require('./scrapeStats');
 const scrapeColors = require('./scrapeColors');
 
 const scrapeEverything = async (pageURL, colorsURL, pName) => {
-    // document.getElementById("appMessages").innerHTML = 'Opening headless browser...';
     const browser = await puppeteer.launch({
         args: ['--no-sandbox'],
-        headless: true,
+        headless: false,
         slowMo: 50
     });
 

@@ -1,5 +1,3 @@
-const regseas = new RegExp(/^#per_game$/i);
-
 const scrapeStats = async (pageURL, page, pName) => {
         await page.goto(pageURL);
 
@@ -17,16 +15,25 @@ const scrapeStats = async (pageURL, page, pName) => {
 
         // clicks first link in results if there are any
         // some players do not have links page, goes directly to stats
-        if ((await page.$('#players > div.search-item > div.search-item-name > a')) !== null) {
-            await page.evaluate(() => document.querySelector('#players > div.search-item > div.search-item-name > a').click())
+        // if ((await page.$('#players > div.search-item > div.search-item-name > a')) !== null) {
+        if ((await page.$('div.search-item > div.search-item-name > a')) !== null) {
+
+            if ((await page.$('#wnba_players-tab > a')) !== null) {
+                await page.evaluate(() => document.querySelector('#wnba_players-tab > a').click())
+                // await page.waitForSelector('#wnba_players > div.search-item > div.search-item-name > strong > a')
+                await page.evaluate(() => document.querySelector('#wnba_players > div.search-item > div.search-item-name > strong > a').click())
+            } else {
+                await page.evaluate(() => document.querySelector('.search-item-name > a').click())
+                // await page.evaluate(() => document.querySelector('#players > div.search-item > div.search-item-name > a').click())
+            }
         }
         
         // scrapes per season data in main table
-        await page.waitForSelector('#per_game > tbody > tr')
-        // await page.waitForSelector(regseas)
-        // console.log(regseas)
+        // await page.waitForSelector('#per_game > tbody > tr')
+        await page.waitForSelector('[id^="per_game"] > tbody >tr.full_table')
 
-        const rows = await page.$$eval('#per_game > tbody > tr.full_table', rows => {
+    const rows = await page.$$eval('[id^="per_game"] > tbody > tr.full_table', rows => {
+        // const rows = await page.$$eval('#per_game > tbody > tr.full_table', rows => {
             return Array.from(rows, row => {
                 const columns = row.querySelectorAll('th, td');
                 return Array.from(columns, column => column.innerText);
