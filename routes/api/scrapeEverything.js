@@ -14,16 +14,28 @@ const scrapeEverything = async (pageURL, colorsURL, pName) => {
         const page = await browser.newPage();
 
 
-        // 1) scrape basketball-reference
+        // 1) scrape basketball-reference.com
         const rowsandTeams = await scrapeStats(pageURL, page, pName);
 
-        // seasons format is [
-        //                    [season, age, team, league, etc.], 
-        //                    [season, age, team, league, etc.]
-        //                   ]
+        // seasons format for men is [
+        //                           [season, age, team, league, etc.], 
+        //                           [season, age, team, league, etc.]
+        //                           ]
+
+        // seasons format for women is [
+        //                             [season, team, age, gamesPlayed, etc.]
+        //                             ]
+
+        // because fuck you, that is why
+
         const seasons = rowsandTeams[0]; // array of (W)NBA season stats
         const teams = rowsandTeams[1]; // set of all team acronyms
-        const league = seasons[0][3];
+        // const league = seasons[0][3];
+        if (seasons[0][3] == 'NBA') {
+            const league = seasons[0][3]
+        } else {
+            const league = 'WNBA'
+        }
         
         const pageTwo = await browser.newPage();
         
