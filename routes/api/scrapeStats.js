@@ -25,17 +25,19 @@ const scrapeStats = async (pageURL, page, pName) => {
             }
         }
         
-        // scrapes per season data in main table
-        // await page.waitForSelector('#per_game > tbody > tr')
         await page.waitForSelector('[id^="per_game"] > tbody > tr.full_table')
-
+        
+        // scrapes headings of stats table since they are both different AND 
+        // in different order for NBA and WNBA players
         const tableHeadings = await page.$$eval('[id^="per_game"] > thead > tr', rows => {
             return Array.from(rows, row => {
                 const heads = row.querySelectorAll('th');
                 return Array.from(heads, head => head.innerText)
             })
         })
-
+        const headings = tableHeadings[0];
+        
+        // scrapes per season data in main table
         // regex used here because the tables are named differently for NBA and WNBA players
         const rows = await page.$$eval('[id^="per_game"] > tbody > tr.full_table', rows => {
             return Array.from(rows, row => {
@@ -47,45 +49,34 @@ const scrapeStats = async (pageURL, page, pName) => {
         // create a new object of all teams player played for
         // this will be used in the team colors object
         const teams = new Set();
-        const headings = tableHeadings[0];
-        // console.log('headings: ')
-        // console.log(headings)
         
         // the table head of a WNBA player reads 'Team' for team
         // the table head of an NBA player reads 'Tm' for team
         // because fuck you, that is why
+        let league;
         if (headings.indexOf('Team') !== -1) {
-            console.log('Team')
             // take the entry of each array under 'Team' or 'Tm'
             const teamIndex = headings.indexOf('Team')
-            console.log(teamIndex)
+            league = 'WNBA';
             for (let row of rows) {
-                console.log(row)
                 teams.add(row[teamIndex])
             }
         } else if (headings.indexOf('Tm') !== -1) {
-            console.log('Tm')
             const teamIndex = headings.indexOf('Tm')
-            console.log(teamIndex)
+            league = 'NBA'
             for (let row of rows) {
-                console.log(row)
                 teams.add(row[teamIndex])
             }
         }
 
-        console.log(teams)
-        // for (let row of rows) {
-            // teams.add(row(teamIndex));
-        // }
-        // console.log(rows)
-        return [
-            rows,
-            headings,
-            teams
-        ];
+        return {
+            'seasons': rows,
+            'headings': headings,
+            'teams': teams,
+            'league': league,
+        };
 
 
 }
-// };
 
 module.exports = scrapeStats;

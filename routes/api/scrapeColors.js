@@ -114,7 +114,6 @@ const scrapeColors = async (colorsURL, page, league, teams) => {
 
             for (let[teamName, hexCodes] of Object.entries(teamColors)) {
                 if (league == 'NBA') {
-                    console.log(teamName)
                     let acro = getKeyByValue(NBA, teamName)
                     teamColors[acro] = hexCodes;
                 } else if (league == 'WNBA') {

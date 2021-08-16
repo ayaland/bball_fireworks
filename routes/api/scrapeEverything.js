@@ -15,27 +15,11 @@ const scrapeEverything = async (pageURL, colorsURL, pName) => {
 
 
         // 1) scrape basketball-reference.com
-        const rowsandTeams = await scrapeStats(pageURL, page, pName);
-
-        // seasons format for men is [
-        //                           [season, age, team, league, etc.], 
-        //                           [season, age, team, league, etc.]
-        //                           ]
-
-        // seasons format for women is [
-        //                             [season, team, age, gamesPlayed, etc.]
-        //                             ]
-
-        // because fuck you, that is why
-
-        const seasons = rowsandTeams[0]; // array of (W)NBA season stats
-        const teams = rowsandTeams[1]; // set of all team acronyms
-        // const league = seasons[0][3];
-        if (seasons[0][3] == 'NBA') {
-            const league = seasons[0][3]
-        } else {
-            const league = 'WNBA'
-        }
+        const statsObject = await scrapeStats(pageURL, page, pName);
+        const seasons = statsObject['seasons']; // array of (W)NBA season stats
+        const headings = statsObject['headings'];
+        const teams = statsObject['teams']; // set of all team acronyms
+        const league = statsObject['league']
         
         const pageTwo = await browser.newPage();
         
@@ -45,7 +29,7 @@ const scrapeEverything = async (pageURL, colorsURL, pName) => {
             //                    Team2: [team2's, hex, color, codes]
             //                   }    
         const teamColors = await scrapeColors(colorsURL, pageTwo, league, teams);
-        return { seasons, teamColors }
+        return { seasons, headings, league, teams, teamColors }
     }
 
     catch(error) {
