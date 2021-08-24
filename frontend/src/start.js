@@ -24,14 +24,12 @@ window.addEventListener('DOMContentLoaded', () => {
     
     let openModal = document.getElementById("openModal");
     openModal.addEventListener('click', (e) => {
-        // e.preventDefault();
         faqModal.style.display = "block";
         openModal.style.display = "none";
     })
 
     let closeModal = document.getElementById("closeModal");
     closeModal.addEventListener('click', (e) => {
-        // e.preventDefault();
         faqModal.style.display = "none";
         openModal.style.display = "block";
     })
@@ -52,85 +50,58 @@ window.addEventListener('DOMContentLoaded', () => {
         })
         .then((data) => {
             const body = data.data;
-            let seasons = body.seasons;
-            let headings = body.headings;
-            let league = body.league;
+            let statsObject = body.statsObject;
             let teamColors = body.teamColors;
+
+            let seasons = statsObject.seasons;
+            let headings = statsObject.headings;
+            let league = statsObject.league;
             
             // construct the stats necessary to animate each season
             let stats = [];
-
-            if (league == 'WNBA') {
-                for (let i = 0; i < seasons.length; i++) {
-                    let seasonArray = []
+            for (let i = 0; i < seasons.length; i++) {
+                let seasonArray = [];
+                let team = '';
+                
+                // split code for WNBA and NBA tables having different headings
+                if (league == 'WNBA') {
                     let yearIndex = headings.indexOf('Year');
                     let teamIndex = headings.indexOf('Team');
-                    let gamesplayedIndex = headings.indexOf('G')
-                    let fieldgoalsIndex = headings.indexOf('FG');
-                    
-                    let year = seasons[i][yearIndex];
-                    let team = seasons[i][teamIndex];
-                    let gamesPlayed = seasons[i][gamesplayedIndex];
-                    let fieldGoals = seasons[i][fieldgoalsIndex];
 
-                    if (teamColors[team]) {
-                        seasonArray.push(year);
-                        seasonArray.push(team);
-                        seasonArray.push(parseInt(gamesPlayed));
-                        seasonArray.push(parseInt(fieldGoals));
-                        stats.push(seasonArray);
-                    } else {
-                        continue;
-                    }
-                }
-                
-            } else if (league == 'NBA') {
-                for (let i = 0; i < seasons.length; i++) {
-                    let seasonArray = [];
+                    let year = seasons[i][yearIndex];
+                    team = seasons[i][teamIndex];
+
+                    seasonArray.push(year);
+                    seasonArray.push(team);
+
+                } else if (league == 'NBA') {
                     let yearIndex = headings.indexOf('Season');
                     let teamIndex = headings.indexOf('Tm');
-                    let gamesplayedIndex = headings.indexOf('G');
-                    let fieldgoalsIndex = headings.indexOf('FG');
-                    
-                    let year = seasons[i][yearIndex];
-                    let team = seasons[i][teamIndex];
-                    let gamesPlayed = seasons[i][gamesplayedIndex];
-                    let fieldGoals = seasons[i][fieldgoalsIndex];
 
-                    if (teamColors[team]) {
-                        seasonArray.push(year);
-                        seasonArray.push(team);
-                        seasonArray.push(parseInt(gamesPlayed));
-                        seasonArray.push(parseInt(fieldGoals));
-                        stats.push(seasonArray);
-                    } else {
-                        continue;
-                    }
+                    let year = seasons[i][yearIndex];
+                    team = seasons[i][teamIndex];
+
+                    seasonArray.push(year);
+                    seasonArray.push(team);
                 }
 
+                // these stat headings are the same for all players
+                let gamesplayedIndex = headings.indexOf('G');
+                let fieldgoalsIndex = headings.indexOf('FG');
+
+                let gamesPlayed = seasons[i][gamesplayedIndex];
+                let fieldGoals = seasons[i][fieldgoalsIndex];
+
+                seasonArray.push(gamesPlayed)
+                seasonArray.push(fieldGoals)
+
+                if (teamColors[team]) {
+                    console.log(seasonArray)
+                    stats.push(seasonArray);
+                } else {
+                    continue;
+                }
             }
-            
-            // for (let i = 0; i < seasons.length; i++) {
-            //     let season = []
-            //     let teamAcronym = seasons[i][2]
-            //     if (teamColors[teamAcronym]) {
-            //         // in the future, also scrape table head and get the indices by the stat abbrev., ie. AST
-            //         // this will be better than changing these int all the time
-            //         let year = seasons[i][0];
-            //         let team = seasons[i][2];
-            //         let gamesPlayed = seasons[i][5];
-            //         let fieldGoals = seasons[i][8];
-                    
-            //         seasonArray.push(year)
-            //         seasonArray.push(team)
-            //         seasonArray.push(parseInt(gamesPlayed))
-            //         season.push(parseInt(fieldGoals))
-            //         stats.push(season)
-                    
-            //     } else {
-            //         continue;
-            //     }
-            // }
 
             // start bballfireworks show
             show.animateSeason(stats, teamColors)

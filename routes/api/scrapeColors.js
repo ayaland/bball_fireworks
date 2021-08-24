@@ -39,11 +39,11 @@ const WNBA = {
     'CON': 'Connecticut Sun',
     'DAL': 'Dallas Wings',
     'IND': 'Indiana Fever',
-    'LAS': 'Los Angeles Sparks',
-    'LAV': 'Las Vegas Aces',
+    'LAS': 'Sparks',
+    'LVA': 'Aces',
     'MIN': 'Minnesota Lynx',
     'NYL': 'New York Liberty',
-    'PHX': 'Phoenix Mercury',
+    'PHO': 'Phoenix Mercury',
     'SEA': 'Seattle Storm',
     'WAS': 'Washington Mystics',
     'defunct teams': 'Tulsa Shock, Sacramento Monarchs, San Antonio Stars'
@@ -56,9 +56,7 @@ const getKeyByValue = (object, value) => {
 };
 
 const scrapeColors = async (colorsURL, page, league, teams) => {
-    // document.getElementById("appMessages").innerHTML = 'Getting team color codes...';
-
-    // create Object of full team names as key and values to be colors scraped
+    // create Object of full team names as [key] and array of color HEX codes as [value]
     try {
         let teamColors = new Object();
         for (let team of teams) {
@@ -68,10 +66,12 @@ const scrapeColors = async (colorsURL, page, league, teams) => {
 
             } else if (league == 'WNBA' && WNBA[team]) {
                 let teamName = WNBA[team];
+                console.log('else if WNBA ' + teamName)
                 teamColors[teamName] = [];
 
             } else {
-                continue;
+                let teamName = team;
+                console.log(teamName)
             }
         };
         
@@ -92,7 +92,6 @@ const scrapeColors = async (colorsURL, page, league, teams) => {
 
             // page.click does not work after Puppeteer 1.6
             // await page.click('input[type="submit"]');
-
             await page.evaluate(() => document.querySelector('input.search-form-submit').click())
 
             await page.waitForSelector('div.colorblock');
@@ -106,8 +105,10 @@ const scrapeColors = async (colorsURL, page, league, teams) => {
                     return colorData;
                 })
             });
+            // console.log(pageData)
 
             for (let arr of pageData) {
+                console.log(arr)
                 let hex = reghex.exec(arr)[0];
                 teamColors[teamName].push(hex);
             };
@@ -121,7 +122,8 @@ const scrapeColors = async (colorsURL, page, league, teams) => {
                     teamColors[acro] = hexCodes;
                 }
             }
-        }
+        } 
+        console.log(teamColors)
     return(teamColors);
     }
     

@@ -25,6 +25,7 @@ const scrapeStats = async (pageURL, page, pName) => {
             }
         }
         
+        // regex used here because the tables are named differently for NBA and WNBA players
         await page.waitForSelector('[id^="per_game"] > tbody > tr.full_table')
         
         // scrapes headings of stats table since they are both different AND 
@@ -38,8 +39,8 @@ const scrapeStats = async (pageURL, page, pName) => {
         const headings = tableHeadings[0];
         
         // scrapes per season data in main table
-        // regex used here because the tables are named differently for NBA and WNBA players
         const rows = await page.$$eval('[id^="per_game"] > tbody > tr.full_table', rows => {
+            console.log('inside rows')
             return Array.from(rows, row => {
                 const columns = row.querySelectorAll('th, td');
                 return Array.from(columns, column => column.innerText);
